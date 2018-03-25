@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Patient Helper</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="add_patient_text">Adicionar Paciente</string>
+    <string name="add_alarm_text">Adicionar Alarm</string>
+    <string name="title_activity_patient">PatientActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="tab_data_text">Dados</string>
+    <string name="tab_alarms_text">Alarmes</string>
+    <string name="name_text">Nome</string>
+    <string name="age_text">Idade</string>
+    <string name="birth_date_text">Data de Nacimento</string>
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#80deea</color>
+    <color name="colorPrimaryDark">#48acb8</color>
+    <color name="colorPrimaryLight">#b2ffff</color>
+    <color name="colorAccent">#4caf50</color>
+    <color name="colorAccentDark">#087f23</color>
+    <color name="colorAccentLight">#80e27e</color>
+    <color name="colorShadow">#bdbdbd</color>
+    <color name="colorText">#000000</color>
+    <color name="colorFabText">#FFFFFF</color>
+    <color name="colorFabRipple">#99d4d4d4</color>
+    <color name="colorFabLabelNormal">#333</color>
+    <color name="colorFabLabelPressed">#444</color>
+    <color name="colorFabLabelRipple">#66efecec</color>
+
+
+</resources>
