@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.unisinos.patienthelper.Util;
+import com.unisinos.patienthelper.Class.Util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,8 +26,6 @@ public class Alarm {
 
     private String horario;
 
-    private boolean diariamente;
-
     private boolean segunda;
 
     private boolean terca;
@@ -42,9 +40,13 @@ public class Alarm {
 
     private boolean domingo;
 
-    private boolean avisouHoje;
-
     private Date dataUltimoAviso;
+
+    private boolean ativo;
+
+    private Date dataIncio;
+
+    private Date dataFim;
 
     private Paciente paciente;
 
@@ -59,7 +61,6 @@ public class Alarm {
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_CODIGO_PACIENTE, alarm.getCodPaciente());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DESCRICAO, alarm.getDescricao());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_HORARIO, alarm.getHorario());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DIARIAMENTE, alarm.isDiariamente());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEGUNDA, alarm.isSegunda());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_TERCA, alarm.isTerca());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUARTA, alarm.isQuarta());
@@ -67,8 +68,10 @@ public class Alarm {
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEXTA, alarm.isSexta());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SABADO, alarm.isSabado());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DOMINGO, alarm.isDomingo());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_AVISOU_HOJE, alarm.isAvisouHoje());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_ULTIMO_AVISO, Util.ConverterDateString(alarm.getDataUltimoAviso()));
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO, alarm.isAtivo());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_INICIO, Util.ConverterDateString(alarm.getDataIncio()));
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM, Util.ConverterDateString(alarm.getDataFim()));
 
 
         if (db.insert(FeedReaderContract.FeedAlarm.TABLE_NAME, null, values) == -1)
@@ -104,7 +107,6 @@ public class Alarm {
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_CODIGO_PACIENTE, alarm.getCodPaciente());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DESCRICAO, alarm.getDescricao());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_HORARIO, alarm.getHorario());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DIARIAMENTE, alarm.isDiariamente());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEGUNDA, alarm.isSegunda());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_TERCA, alarm.isTerca());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUARTA, alarm.isQuarta());
@@ -112,8 +114,10 @@ public class Alarm {
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEXTA, alarm.isSexta());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SABADO, alarm.isSabado());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DOMINGO, alarm.isDomingo());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_AVISOU_HOJE, alarm.isAvisouHoje());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO, alarm.isAtivo());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_ULTIMO_AVISO, Util.ConverterDateString(alarm.getDataUltimoAviso()));
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_INICIO, Util.ConverterDateString(alarm.getDataIncio()));
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM, Util.ConverterDateString(alarm.getDataFim()));
 
         String selection = FeedReaderContract.FeedAlarm.COLUMN_NAME_CODIGO + " = ?";
         String[] selectionArgs = {alarm.getCodigo() + ""};
@@ -148,7 +152,6 @@ public class Alarm {
         sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_CODIGO_PACIENTE + ",\n";
         sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_DESCRICAO + ",\n";
         sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_HORARIO + ", \n";
-        sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_DIARIAMENTE + ", \n";
         sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_SEGUNDA + ", \n";
         sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_TERCA + ", \n";
         sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_QUARTA + ", \n";
@@ -156,8 +159,10 @@ public class Alarm {
         sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_SEXTA + ", \n";
         sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_SABADO + ", \n";
         sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_DOMINGO + ", \n";
-        sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_AVISOU_HOJE + ", \n";
-        sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_ULTIMO_AVISO + " \n";
+        sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_ULTIMO_AVISO + ", \n";
+        sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO + ", \n";
+        sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_INICIO + ", \n";
+        sql += FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM + " \n";
         sql += " From " + FeedReaderContract.FeedAlarm.TABLE_NAME + "\n";
         sql += " " + complementoSelect;
 
@@ -174,11 +179,11 @@ public class Alarm {
 
     public static List<Alarm> ConsultarSQL(SQLiteDatabase db, Date date) {
         List<Alarm> lista = new ArrayList<Alarm>();
-        String where = " Where (" ;
+        String where = " Where ";
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int day = calendar.get(Calendar.DAY_OF_WEEK);
-        switch (day){
+        switch (day) {
             case Calendar.SUNDAY:
                 where += FeedReaderContract.FeedAlarm.COLUMN_NAME_DOMINGO + " = 1";
                 break;
@@ -201,9 +206,10 @@ public class Alarm {
                 where += FeedReaderContract.FeedAlarm.COLUMN_NAME_SABADO + " = 1";
                 break;
         }
-        where += " Or " + FeedReaderContract.FeedAlarm.COLUMN_NAME_DIARIAMENTE + " = 1)";
-
-
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        where += " And '" + format.format(date) + "' >= date(" + FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_INICIO + ")";
+        where += " And '" + format.format(date) + "' <= date(" + FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM + ")";
+        where += " And " + FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO + " = 1";
         lista = ConsultarSQL(db, where);
 
         for (Alarm item : lista) {
@@ -221,7 +227,6 @@ public class Alarm {
         alarm.setCodPaciente(c.getLong(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_CODIGO_PACIENTE)));
         alarm.setDescricao(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DESCRICAO)));
         alarm.setHorario(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_HORARIO)));
-        alarm.setDiariamente(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DIARIAMENTE))));
         alarm.setSegunda(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEGUNDA))));
         alarm.setTerca(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_TERCA))));
         alarm.setQuarta(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUARTA))));
@@ -229,8 +234,10 @@ public class Alarm {
         alarm.setSexta(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEXTA))));
         alarm.setSabado(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SABADO))));
         alarm.setDomingo(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DOMINGO))));
-        alarm.setAvisouHoje(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_AVISOU_HOJE))));
         alarm.setDataUltimoAviso(Util.ConverterStringDate(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_ULTIMO_AVISO))));
+        alarm.setAtivo(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO))));
+        alarm.setDataIncio(Util.ConverterStringDate(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_INICIO))));
+        alarm.setDataFim(Util.ConverterStringDate(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM))));
 
 
         return alarm;
@@ -266,14 +273,6 @@ public class Alarm {
 
     public void setHorario(String horario) {
         this.horario = horario;
-    }
-
-    public boolean isDiariamente() {
-        return diariamente;
-    }
-
-    public void setDiariamente(boolean diariamente) {
-        this.diariamente = diariamente;
     }
 
     public boolean isSegunda() {
@@ -332,14 +331,6 @@ public class Alarm {
         this.domingo = domingo;
     }
 
-    public boolean isAvisouHoje() {
-        return avisouHoje;
-    }
-
-    public void setAvisouHoje(boolean avisouHoje) {
-        this.avisouHoje = avisouHoje;
-    }
-
     public Date getDataUltimoAviso() {
         return dataUltimoAviso;
     }
@@ -354,5 +345,29 @@ public class Alarm {
 
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
+    }
+
+    public Date getDataIncio() {
+        return dataIncio;
+    }
+
+    public void setDataIncio(Date dataIncio) {
+        this.dataIncio = dataIncio;
+    }
+
+    public Date getDataFim() {
+        return dataFim;
+    }
+
+    public void setDataFim(Date dataFim) {
+        this.dataFim = dataFim;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 }

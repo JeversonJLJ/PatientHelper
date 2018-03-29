@@ -1,10 +1,11 @@
-package com.unisinos.patienthelper;
+package com.unisinos.patienthelper.Class;
 
 import android.app.Activity;
 import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -45,5 +46,32 @@ public class Util {
                     Toast.makeText(context, msg, tempo).show();
                 }
             });
+    }
+
+    public static Date ConverterData (String data) {
+        if(data == null)
+            return null;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            return sdf.parse(data);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String ConverterData (Date data) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(data);
+    }
+
+    public static Calendar ConverterCalendario (String data) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            cal.setTime(sdf.parse(data));
+        } catch (ParseException e) {
+        }
+        return cal;
     }
 }

@@ -7,14 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.unisinos.patienthelper.Database.Alarm;
 import com.unisinos.patienthelper.Database.Database;
 import com.unisinos.patienthelper.Database.Paciente;
+import com.unisinos.patienthelper.Dialog.DialogDate;
 import com.unisinos.patienthelper.R;
-import com.unisinos.patienthelper.Util;
+import com.unisinos.patienthelper.Class.Util;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -38,6 +40,17 @@ public class DataFragment extends Fragment {
         mEditTextAge = mRootView.findViewById(R.id.editTextAge);
         mEditTextComments = mRootView.findViewById(R.id.editTextComments);
 
+        mEditTextBirthDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogDate.ShowData(getActivity(), new DialogDate.OnSelectedDate() {
+                    @Override
+                    public void onSelectedDate(Date date, String dateText) {
+                        mEditTextBirthDate.setText(dateText);
+                    }
+                }, Util.ConverterCalendario(mEditTextBirthDate.getText().toString()));
+            }
+        });
         return mRootView;
     }
     public void save(){
@@ -50,16 +63,29 @@ public class DataFragment extends Fragment {
         patient.setObservacao(mEditTextComments.getText().toString());
         Paciente.InserirSQL(db,patient);
 
+        //TODO esta gerando alarm para teste remover quando fizer tela de cadastro de alarms
         Alarm alarm = new Alarm();
         alarm.setCodigo(Alarm.ObterProximoCodigo(db));
         alarm.setCodPaciente(patient.getCodigo());
+        alarm.setAtivo(true);
         alarm.setDomingo(true);
+        alarm.setSegunda(true);
+        alarm.setTerca(true);
+        alarm.setQuarta(true);
+        alarm.setQuinta(true);
+        alarm.setSexta(true);
+        alarm.setSabado(true);
         Random r = new Random();
         int hora = r.nextInt(23 - 0) + 0;
         int min = r.nextInt(59 - 0) + 0;
         alarm.setHorario(hora + ":" + min);
         alarm.setDescricao("Alarm de teste");
         alarm.setDataUltimoAviso(Util.ConverterStringDate("24/03/2018"));
+        alarm.setDataIncio(Calendar.getInstance().getTime());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE,2);
+        alarm.setDataFim(calendar.getTime());
         Alarm.InserirSQL(db,alarm);
 
     }

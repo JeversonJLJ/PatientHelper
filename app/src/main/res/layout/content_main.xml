@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <View
             android:id="@+id/day_of_week_divider"
             android:layout_width="fill_parent"
@@ -59,8 +60,8 @@
                 android:layout_marginTop="27dp" />
 
 
-            <ListView
-                android:id="@+id/list_view_schedule"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_schedule"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </RelativeLayout>
@@ -70,9 +71,9 @@
             android:id="@+id/change_day_divider"
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:visibility="gone"
             android:layout_above="@id/change_day_bar"
-            android:background="@color/colorAccent" />
+            android:background="@color/colorAccent"
+            android:visibility="gone" />
 
 
         <RelativeLayout

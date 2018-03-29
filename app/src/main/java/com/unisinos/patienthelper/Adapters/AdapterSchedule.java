@@ -34,7 +34,7 @@ public class AdapterSchedule extends ArrayAdapter<Alarm> {
 
         Alarm item = getItem(position);
 
-        view = mInflater.inflate(R.layout.layout_list_schedule, null);
+        view = mInflater.inflate(R.layout.layout_view_schedule, null);
 
         TextView textViewPatientName = (TextView) view.findViewById(R.id.textViewPatientName);
         TextView textViewTime = (TextView) view.findViewById(R.id.textViewTime);

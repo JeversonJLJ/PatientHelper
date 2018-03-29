@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.unisinos.patienthelper.Adapters.AdapterSchedule;
+import com.unisinos.patienthelper.Adapters.RecyclerAdapterSchedule;
 import com.unisinos.patienthelper.Database.Alarm;
 import com.unisinos.patienthelper.Database.Database;
 import com.unisinos.patienthelper.R;
@@ -37,18 +38,19 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Date day;
-    TextView txtDate;
-    TextView txtDayOfWeek;
-    ImageButton btnNextDay;
-    ImageButton btnPreviousDay;
-    ProgressBar progressBar;
+    Date mDay;
+    TextView mTxtDate;
+    TextView mTxtDayOfWeek;
+    ImageButton mBtnNextDay;
+    ImageButton mBtnPreviousDay;
+    ProgressBar mProgressBar;
 
-    FloatingActionMenu fabMenu;
-    FloatingActionButton fabAddAlarm, fabAddPatient;
-    List<Alarm> alarmList;
-    private ListView listView;
-    private AdapterSchedule adapter;
+    FloatingActionMenu mFabMenu;
+    FloatingActionButton mFabAddAlarm, mFabAddPatient;
+    List<Alarm> mAlarmList;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
 
     @Override
@@ -58,50 +60,53 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final AppCompatActivity activity = this;
-        txtDate = (TextView) findViewById(R.id.date_text);
-        txtDayOfWeek = (TextView) findViewById(R.id.day_of_week_text);
-        btnNextDay = (ImageButton) findViewById(R.id.next_day);
-        btnPreviousDay= (ImageButton) findViewById(R.id.previous_day);
-        progressBar = findViewById(R.id.progressBar);
-        day = Calendar.getInstance().getTime();
+        mTxtDate = (TextView) findViewById(R.id.date_text);
+        mTxtDayOfWeek = (TextView) findViewById(R.id.day_of_week_text);
+        mBtnNextDay = (ImageButton) findViewById(R.id.next_day);
+        mBtnPreviousDay= (ImageButton) findViewById(R.id.previous_day);
+        mProgressBar = findViewById(R.id.progressBar);
+        mDay = Calendar.getInstance().getTime();
 
 
 
-        btnNextDay.setOnClickListener(new View.OnClickListener() {
+        mBtnNextDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(day);
+                calendar.setTime(mDay);
                 calendar.add(Calendar.DATE, 1);
                 changeDate(calendar.getTime());
             }
         });
 
-        btnPreviousDay.setOnClickListener(new View.OnClickListener() {
+        mBtnPreviousDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(day);
+                calendar.setTime(mDay);
                 calendar.add(Calendar.DATE, -1);
                 changeDate(calendar.getTime());
             }
         });
 
-        fabMenu = (FloatingActionMenu) findViewById(R.id.fab_add_menu);
-        fabAddAlarm = (FloatingActionButton) findViewById(R.id.fab_add_alarm);
-        fabAddPatient = (FloatingActionButton) findViewById(R.id.fab_add_patient);
+        mFabMenu = (FloatingActionMenu) findViewById(R.id.fab_add_menu);
+        mFabAddAlarm = (FloatingActionButton) findViewById(R.id.fab_add_alarm);
+        mFabAddPatient = (FloatingActionButton) findViewById(R.id.fab_add_patient);
 
 
-        fabAddAlarm.setOnClickListener(new View.OnClickListener() {
+
+
+        mFabAddAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                mFabMenu.close(true);
             }
         });
 
-        fabAddPatient.setOnClickListener(new View.OnClickListener() {
+        mFabAddPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mFabMenu.close(true);
                 Intent intent = new Intent(activity, PatientActivity.class);
                 //Bundle bundle = new Bundle();
                // bundle.putLong(FeedReaderContract.FeedPedidos.COLUMN_NAME_CODPEDIDO, itemPedido.getCodPedido());
@@ -119,12 +124,15 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        alarmList = new ArrayList<Alarm>();
+        mAlarmList = new ArrayList<Alarm>();
 
-        listView = findViewById(R.id.list_view_schedule);
-        adapter = new AdapterSchedule(this,R.layout.layout_list_schedule, alarmList);
-        listView.setAdapter(adapter);
-        changeDate(day);
+        mRecyclerView = findViewById(R.id.recycler_view_schedule);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new RecyclerAdapterSchedule(mAlarmList);
+        mRecyclerView.setAdapter(mAdapter);
+        changeDate(mDay);
 
 
     }
@@ -132,18 +140,18 @@ public class MainActivity extends AppCompatActivity
     private void loadData(){
         Database mDbHelper = new Database(MainActivity.this);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        alarmList = Alarm.ConsultarSQL(db,day);
-        adapter = new AdapterSchedule(this,R.layout.layout_list_schedule, alarmList);
-        listView.setAdapter(adapter);
-        progressBar.setVisibility(View.GONE);
+        mAlarmList = Alarm.ConsultarSQL(db,mDay);
+        mAdapter = new RecyclerAdapterSchedule(mAlarmList);
+        mRecyclerView.setAdapter(mAdapter);
+        mProgressBar.setVisibility(View.GONE);
 
     }
     private void changeDate(Date date){
-        day = date;
+        mDay = date;
         SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy");
-        txtDate.setText(df.format(day).toUpperCase());
+        mTxtDate.setText(df.format(mDay).toUpperCase());
         df = new SimpleDateFormat("EEEE");
-        txtDayOfWeek.setText(df.format(day).toUpperCase());
+        mTxtDayOfWeek.setText(df.format(mDay).toUpperCase());
         loadData();
     }
     @Override

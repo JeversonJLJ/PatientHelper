@@ -46,7 +46,6 @@ public final class FeedReaderContract {
         public static final String COLUMN_NAME_CODIGO_PACIENTE = "CodPaciente";
         public static final String COLUMN_NAME_DESCRICAO = "Descricao";
         public static final String COLUMN_NAME_HORARIO = "Horario";
-        public static final String COLUMN_NAME_DIARIAMENTE = "Diariamente";
         public static final String COLUMN_NAME_SEGUNDA = "Segunda";
         public static final String COLUMN_NAME_TERCA = "Terca";
         public static final String COLUMN_NAME_QUARTA = "Quarta";
@@ -54,11 +53,11 @@ public final class FeedReaderContract {
         public static final String COLUMN_NAME_SEXTA = "Sexta";
         public static final String COLUMN_NAME_SABADO = "Sabado";
         public static final String COLUMN_NAME_DOMINGO = "Domingo";
-        public static final String COLUMN_NAME_AVISOU_HOJE= "AvisouHoje";
         public static final String COLUMN_NAME_DATA_ULTIMO_AVISO= "DataUltimoAviso";
+        public static final String COLUMN_NAME_ATIVO= "Ativo";
         public static final String COLUMN_NAME_DATA_INICIO= "DataInicio";
         public static final String COLUMN_NAME_DATA_FIM= "DataFim";
-        public static final String COLUMN_NAME_SEM_DATA_FIM= "SemDataFim";
+
 
 
         public static final String SQL_CREATE_ENTRIES =
@@ -67,7 +66,6 @@ public final class FeedReaderContract {
                         FeedAlarm.COLUMN_NAME_CODIGO_PACIENTE + INTEGER_TYPE + COMMA_SEP +
                         FeedAlarm.COLUMN_NAME_DESCRICAO + TEXT_TYPE + COMMA_SEP +
                         FeedAlarm.COLUMN_NAME_HORARIO + TEXT_TYPE + COMMA_SEP +
-                        FeedAlarm.COLUMN_NAME_DIARIAMENTE + NUMERIC_TYPE + COMMA_SEP +
                         FeedAlarm.COLUMN_NAME_SEGUNDA + NUMERIC_TYPE + COMMA_SEP +
                         FeedAlarm.COLUMN_NAME_TERCA + NUMERIC_TYPE + COMMA_SEP +
                         FeedAlarm.COLUMN_NAME_QUARTA + NUMERIC_TYPE + COMMA_SEP +
@@ -75,11 +73,10 @@ public final class FeedReaderContract {
                         FeedAlarm.COLUMN_NAME_SEXTA + NUMERIC_TYPE + COMMA_SEP +
                         FeedAlarm.COLUMN_NAME_SABADO + NUMERIC_TYPE + COMMA_SEP +
                         FeedAlarm.COLUMN_NAME_DOMINGO + NUMERIC_TYPE + COMMA_SEP +
-                        FeedAlarm.COLUMN_NAME_AVISOU_HOJE + NUMERIC_TYPE + COMMA_SEP +
                         FeedAlarm.COLUMN_NAME_DATA_ULTIMO_AVISO + TEXT_TYPE + COMMA_SEP +
+                        FeedAlarm.COLUMN_NAME_ATIVO + NUMERIC_TYPE + COMMA_SEP +
                         FeedAlarm.COLUMN_NAME_DATA_INICIO + TEXT_TYPE + COMMA_SEP +
-                        FeedAlarm.COLUMN_NAME_DATA_FIM + TEXT_TYPE + COMMA_SEP +
-                        FeedAlarm.COLUMN_NAME_SEM_DATA_FIM + NUMERIC_TYPE + " )";
+                        FeedAlarm.COLUMN_NAME_DATA_FIM + TEXT_TYPE + " )";
 
         public static final String SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + FeedAlarm.TABLE_NAME;

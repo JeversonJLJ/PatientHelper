@@ -1,6 +1,5 @@
 package com.unisinos.patienthelper.Activity;
 
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
@@ -21,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.unisinos.patienthelper.Adapters.ViewPagerAdapter;
 import com.unisinos.patienthelper.Fragment.AlarmsFragment;
@@ -39,10 +39,10 @@ public class PatientActivity extends AppCompatActivity {
     private FloatingActionButton mFabSavePatient;
     private FloatingActionMenu mFabPatientEditMenu;
     private FloatingActionMenu mFabAlarmEditMenu;
-    private com.github.clans.fab.FloatingActionButton mFabMenuSaveAlarm;
-    private com.github.clans.fab.FloatingActionButton mFabMenuDeleteAlarm;
-    private com.github.clans.fab.FloatingActionButton mFabMenuSavePatient;
-    private com.github.clans.fab.FloatingActionButton mFabMenuDeletePatient;
+    private FloatingActionButton mFabMenuSaveAlarm;
+    private FloatingActionButton mFabMenuDeleteAlarm;
+    private FloatingActionButton mFabMenuSavePatient;
+    private FloatingActionButton mFabMenuDeletePatient;
 
 
     @Override
@@ -55,10 +55,10 @@ public class PatientActivity extends AppCompatActivity {
         mFabSavePatient = (FloatingActionButton) findViewById(R.id.fab_save_patient);
         mFabPatientEditMenu = (FloatingActionMenu) findViewById(R.id.fab_patient_edit_menu);
         mFabAlarmEditMenu = (FloatingActionMenu) findViewById(R.id.fab_alarm_edit_menu);
-        mFabMenuSaveAlarm = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_menu_save_alarm);
-        mFabMenuDeleteAlarm = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_menu_delete_alarm);
-        mFabMenuSavePatient = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_menu_save_patient);
-        mFabMenuDeletePatient = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_menu_delete_patient);
+        mFabMenuSaveAlarm = (FloatingActionButton) findViewById(R.id.fab_menu_save_alarm);
+        mFabMenuDeleteAlarm = (FloatingActionButton) findViewById(R.id.fab_menu_delete_alarm);
+        mFabMenuSavePatient = (FloatingActionButton) findViewById(R.id.fab_menu_save_patient);
+        mFabMenuDeletePatient = (FloatingActionButton) findViewById(R.id.fab_menu_delete_patient);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -81,9 +81,9 @@ public class PatientActivity extends AppCompatActivity {
         if (bundle != null) {
 
         } else {
-            mFabAddAlarm.hide();
-            mFabSaveAlarm.hide();
-            mFabSavePatient.show();
+            mFabAddAlarm.hide(false);
+            mFabSaveAlarm.hide(false);
+            mFabSavePatient.show(false);
             mFabPatientEditMenu.setVisibility(View.GONE);
             mFabAlarmEditMenu.setVisibility(View.GONE);
             mFabMenuSaveAlarm.hide(false);
@@ -132,7 +132,7 @@ public class PatientActivity extends AppCompatActivity {
 
     }
 
-    private void clickButtons(){
+    private void clickButtons() {
         mFabSavePatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,15 +142,16 @@ public class PatientActivity extends AppCompatActivity {
         });
 
     }
+
     private void setTab(int position) {
         mTabLayout.getTabAt(position).select();
         mViewPager.setCurrentItem(position, false);
         if (position == 1) {
-            mFabAddAlarm.show();
-            mFabSavePatient.hide();
+            mFabAddAlarm.show(true);
+            mFabSavePatient.hide(true);
         } else {
-            mFabAddAlarm.hide();
-            mFabSavePatient.show();
+            mFabAddAlarm.hide(true);
+            mFabSavePatient.show(true);
         }
     }
 
