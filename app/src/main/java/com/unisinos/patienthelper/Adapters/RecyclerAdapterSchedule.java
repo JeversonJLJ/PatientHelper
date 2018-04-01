@@ -1,5 +1,8 @@
 package com.unisinos.patienthelper.Adapters;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.unisinos.patienthelper.Activity.MainActivity;
+import com.unisinos.patienthelper.Activity.PatientActivity;
 import com.unisinos.patienthelper.Database.Alarm;
 import com.unisinos.patienthelper.R;
 
@@ -19,6 +24,7 @@ import java.util.List;
 public class RecyclerAdapterSchedule extends RecyclerView.Adapter<RecyclerAdapterSchedule.ViewHolder> {
 
     private List<Alarm> list;
+    private Activity activity;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -37,7 +43,8 @@ public class RecyclerAdapterSchedule extends RecyclerView.Adapter<RecyclerAdapte
     }
     
     
-    public RecyclerAdapterSchedule(List<Alarm> list) {
+    public RecyclerAdapterSchedule(Activity activity, List<Alarm> list) {
+        this.activity = activity;
         this.list = list;
     }
 
@@ -50,11 +57,23 @@ public class RecyclerAdapterSchedule extends RecyclerView.Adapter<RecyclerAdapte
 
     @Override
     public void onBindViewHolder(final RecyclerAdapterSchedule.ViewHolder holder, int position) {
-        Alarm alarm = list.get(position);
+        final Alarm alarm = list.get(position);
        //TransitionManager.beginDelayedTransition(holder.mRoot, new AutoTransition());
         holder.mTextViewPatientName.setText(alarm.getPaciente().getNome());
         holder.mTextViewTime.setText(alarm.getHorario());
         holder.mTextViewDescription.setText(alarm.getDescricao());
+
+        holder.mRoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, PatientActivity.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putLong(PatientActivity.COD_PATIENT,alarm.getCodPaciente());
+                intent.putExtras(bundle);
+                activity.startActivityForResult(intent, MainActivity.REQ_LOAD_PATIENT);
+            }
+        });
 
     }
 

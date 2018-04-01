@@ -14,4 +14,17 @@
     <string name="name_text">Nome</string>
     <string name="age_text">Idade</string>
     <string name="birth_date_text">Data de Nacimento</string>
+    <string name="toggle_sunday_text">D</string>
+    <string name="toggle_monday_text">S</string>
+    <string name="toggle_tuesday_text">T</string>
+    <string name="toggle_wednesday_text">Q</string>
+    <string name="toggle_thursday_text">Q</string>
+    <string name="toggle_friday_text">S</string>
+    <string name="toggle_saturday_text">S</string>
+    <string name="description_text">Descrição</string>
+    <string name="delete_text">Excluir</string>
+    <string name="data_text">DADOS</string>
+    <string name="alarm_text">ALARM</string>
+    <string name="select_hour_minutes_text">Selecione a hora e minutos</string>
+
 </resources>

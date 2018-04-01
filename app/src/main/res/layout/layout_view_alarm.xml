@@ -20,33 +20,234 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="01:00"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="50sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/switchActive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/textInputLayoutDescription"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ToggleButton
-            android:id="@+id/toggleButton"
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTime">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/textInputEditTextDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/description_text" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/constraintLayoutDaysOfTheWeek"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDescription">
+
+            <ToggleButton
+                android:id="@+id/toggleButtonSunday"
+                android:layout_width="@dimen/toggle_days_of_the_week_margin"
+                android:layout_height="@dimen/toggle_days_of_the_week_margin"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/toggle_selector_days_of_the_week"
+                android:textColor="@color/toggle_days_of_the_week_color"
+                android:textOff="@string/toggle_sunday_text"
+                android:textOn="@string/toggle_sunday_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ToggleButton
+                android:id="@+id/toggleButtonMonday"
+                android:layout_width="@dimen/toggle_days_of_the_week_margin"
+                android:layout_height="@dimen/toggle_days_of_the_week_margin"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/toggle_selector_days_of_the_week"
+                android:textColor="@color/toggle_days_of_the_week_color"
+                android:textOff="@string/toggle_monday_text"
+                android:textOn="@string/toggle_monday_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/toggleButtonSunday" />
+
+            <ToggleButton
+                android:id="@+id/toggleButtonTuesday"
+                android:layout_width="@dimen/toggle_days_of_the_week_margin"
+                android:layout_height="@dimen/toggle_days_of_the_week_margin"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/toggle_selector_days_of_the_week"
+                android:textColor="@color/toggle_days_of_the_week_color"
+                android:textOff="@string/toggle_tuesday_text"
+                android:textOn="@string/toggle_tuesday_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/toggleButtonMonday" />
+
+            <ToggleButton
+                android:id="@+id/toggleButtonWednesday"
+                android:layout_width="@dimen/toggle_days_of_the_week_margin"
+                android:layout_height="@dimen/toggle_days_of_the_week_margin"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/toggle_selector_days_of_the_week"
+                android:textColor="@color/toggle_days_of_the_week_color"
+                android:textOff="@string/toggle_wednesday_text"
+                android:textOn="@string/toggle_wednesday_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/toggleButtonTuesday" />
+
+            <ToggleButton
+                android:id="@+id/toggleButtonThursday"
+                android:layout_width="@dimen/toggle_days_of_the_week_margin"
+                android:layout_height="@dimen/toggle_days_of_the_week_margin"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/toggle_selector_days_of_the_week"
+                android:textColor="@color/toggle_days_of_the_week_color"
+                android:textOff="@string/toggle_thursday_text"
+                android:textOn="@string/toggle_thursday_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/toggleButtonWednesday" />
+
+            <ToggleButton
+                android:id="@+id/toggleButtonFriday"
+                android:layout_width="@dimen/toggle_days_of_the_week_margin"
+                android:layout_height="@dimen/toggle_days_of_the_week_margin"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/toggle_selector_days_of_the_week"
+                android:textColor="@color/toggle_days_of_the_week_color"
+                android:textOff="@string/toggle_friday_text"
+                android:textOn="@string/toggle_friday_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/toggleButtonThursday" />
+
+            <ToggleButton
+                android:id="@+id/toggleButtonSaturday"
+                android:layout_width="@dimen/toggle_days_of_the_week_margin"
+                android:layout_height="@dimen/toggle_days_of_the_week_margin"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/toggle_selector_days_of_the_week"
+                android:textColor="@color/toggle_days_of_the_week_color"
+                android:textOff="@string/toggle_saturday_text"
+                android:textOn="@string/toggle_saturday_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/toggleButtonFriday" />
+        </android.support.constraint.ConstraintLayout>
+
+        <ImageButton
+            android:id="@+id/imageButtonDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:checked="false"
-            android:background="@drawable/toggle_selector_days_of_the_week"
-            android:textOn="D"
-            android:textOff="D"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutDaysOfTheWeek"
+            app:srcCompat="@drawable/ic_delete_black" />
+
+        <TextView
+            android:id="@+id/textViewDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/delete_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageButtonDelete"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutDaysOfTheWeek" />
+
+
+
+        <ImageButton
+            android:id="@+id/imageButtonShowHide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutDaysOfTheWeek"
+            app:srcCompat="@drawable/ic_arrow_down" />
+
+        <TextView
+            android:id="@+id/textViewDescription"
+            android:layout_width="0dp"
+            android:layout_height="17dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/description_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageButtonShowHide"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewTime" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
     </android.support.constraint.ConstraintLayout>
 

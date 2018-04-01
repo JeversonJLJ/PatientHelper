@@ -61,15 +61,15 @@ public class Alarm {
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_CODIGO_PACIENTE, alarm.getCodPaciente());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DESCRICAO, alarm.getDescricao());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_HORARIO, alarm.getHorario());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEGUNDA, alarm.isSegunda());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_TERCA, alarm.isTerca());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUARTA, alarm.isQuarta());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUINTA, alarm.isQuinta());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEXTA, alarm.isSexta());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SABADO, alarm.isSabado());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DOMINGO, alarm.isDomingo());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEGUNDA, alarm.getSegunda());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_TERCA, alarm.getTerca());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUARTA, alarm.getQuarta());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUINTA, alarm.getQuinta());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEXTA, alarm.getSexta());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SABADO, alarm.getSabado());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DOMINGO, alarm.getDomingo());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_ULTIMO_AVISO, Util.ConverterDateString(alarm.getDataUltimoAviso()));
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO, alarm.isAtivo());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO, alarm.getAtivo());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_INICIO, Util.ConverterDateString(alarm.getDataIncio()));
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM, Util.ConverterDateString(alarm.getDataFim()));
 
@@ -107,14 +107,14 @@ public class Alarm {
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_CODIGO_PACIENTE, alarm.getCodPaciente());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DESCRICAO, alarm.getDescricao());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_HORARIO, alarm.getHorario());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEGUNDA, alarm.isSegunda());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_TERCA, alarm.isTerca());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUARTA, alarm.isQuarta());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUINTA, alarm.isQuinta());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEXTA, alarm.isSexta());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SABADO, alarm.isSabado());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DOMINGO, alarm.isDomingo());
-        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO, alarm.isAtivo());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEGUNDA, alarm.getSegunda());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_TERCA, alarm.getTerca());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUARTA, alarm.getQuarta());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUINTA, alarm.getQuinta());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEXTA, alarm.getSexta());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_SABADO, alarm.getSabado());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DOMINGO, alarm.getDomingo());
+        values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO, alarm.getAtivo());
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_ULTIMO_AVISO, Util.ConverterDateString(alarm.getDataUltimoAviso()));
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_INICIO, Util.ConverterDateString(alarm.getDataIncio()));
         values.put(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM, Util.ConverterDateString(alarm.getDataFim()));
@@ -176,6 +176,12 @@ public class Alarm {
         return lista;
     }
 
+    public static List<Alarm> ConsultarSQL(SQLiteDatabase db, long codPaciente) {
+        List<Alarm> lista;
+        String where = " Where " + FeedReaderContract.FeedAlarm.COLUMN_NAME_CODIGO_PACIENTE + " = " + codPaciente;
+        lista = ConsultarSQL(db, where);
+        return lista;
+    }
 
     public static List<Alarm> ConsultarSQL(SQLiteDatabase db, Date date) {
         List<Alarm> lista = new ArrayList<Alarm>();
@@ -227,15 +233,16 @@ public class Alarm {
         alarm.setCodPaciente(c.getLong(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_CODIGO_PACIENTE)));
         alarm.setDescricao(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DESCRICAO)));
         alarm.setHorario(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_HORARIO)));
-        alarm.setSegunda(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEGUNDA))));
-        alarm.setTerca(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_TERCA))));
-        alarm.setQuarta(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUARTA))));
-        alarm.setQuinta(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUINTA))));
-        alarm.setSexta(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEXTA))));
-        alarm.setSabado(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SABADO))));
-        alarm.setDomingo(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DOMINGO))));
+
+        alarm.setSegunda(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEGUNDA))==1?true:false);
+        alarm.setTerca(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_TERCA))==1?true:false);
+        alarm.setQuarta(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUARTA))==1?true:false);
+        alarm.setQuinta(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUINTA))==1?true:false);
+        alarm.setSexta(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEXTA))==1?true:false);
+        alarm.setSabado(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SABADO))==1?true:false);
+        alarm.setDomingo(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DOMINGO))==1?true:false);
         alarm.setDataUltimoAviso(Util.ConverterStringDate(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_ULTIMO_AVISO))));
-        alarm.setAtivo(Boolean.parseBoolean(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO))));
+        alarm.setAtivo(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO))==1?true:false);
         alarm.setDataIncio(Util.ConverterStringDate(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_INICIO))));
         alarm.setDataFim(Util.ConverterStringDate(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM))));
 
@@ -279,12 +286,20 @@ public class Alarm {
         return segunda;
     }
 
+    public int getSegunda() {
+        return segunda ? 1 : 0;
+    }
+
     public void setSegunda(boolean segunda) {
         this.segunda = segunda;
     }
 
     public boolean isTerca() {
         return terca;
+    }
+
+    public int getTerca() {
+        return terca ? 1 : 0;
     }
 
     public void setTerca(boolean terca) {
@@ -295,6 +310,11 @@ public class Alarm {
         return quarta;
     }
 
+    public int getQuarta() {
+        return quarta ? 1 : 0;
+    }
+
+
     public void setQuarta(boolean quarta) {
         this.quarta = quarta;
     }
@@ -302,6 +322,11 @@ public class Alarm {
     public boolean isQuinta() {
         return quinta;
     }
+
+    public int getQuinta() {
+        return quinta ? 1 : 0;
+    }
+
 
     public void setQuinta(boolean quinta) {
         this.quinta = quinta;
@@ -311,6 +336,11 @@ public class Alarm {
         return sexta;
     }
 
+    public int getSexta() {
+        return sexta?1:0;
+    }
+
+
     public void setSexta(boolean sexta) {
         this.sexta = sexta;
     }
@@ -319,6 +349,11 @@ public class Alarm {
         return sabado;
     }
 
+    public int getSabado() {
+        return sabado?1:0;
+    }
+
+
     public void setSabado(boolean sabado) {
         this.sabado = sabado;
     }
@@ -326,6 +361,11 @@ public class Alarm {
     public boolean isDomingo() {
         return domingo;
     }
+
+    public int getDomingo() {
+        return domingo?1:0;
+    }
+
 
     public void setDomingo(boolean domingo) {
         this.domingo = domingo;
@@ -366,6 +406,11 @@ public class Alarm {
     public boolean isAtivo() {
         return ativo;
     }
+
+    public int getAtivo() {
+        return ativo?1:0;
+    }
+
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;

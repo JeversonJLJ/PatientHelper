@@ -2,12 +2,14 @@ package com.unisinos.patienthelper.Fragment;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.unisinos.patienthelper.Adapters.RecyclerAdapterSchedule;
 import com.unisinos.patienthelper.Database.Alarm;
 import com.unisinos.patienthelper.Database.Database;
 import com.unisinos.patienthelper.Database.Paciente;
@@ -27,15 +29,18 @@ import java.util.Random;
 public class DataFragment extends Fragment {
 
     private View mRootView;
-    private EditText mEditTextName;
+    public long codPatient;
+    private Paciente mPatient;
+    private TextInputEditText mEditTextName;
     private EditText mEditTextBirthDate;
     private EditText mEditTextAge;
     private EditText mEditTextComments;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_patient_data, container, false);
-        mEditTextName = mRootView.findViewById(R.id.editTextName);
+        mEditTextName = mRootView.findViewById(R.id.textInputEditTextName);
         mEditTextBirthDate = mRootView.findViewById(R.id.editTextBirthDate);
         mEditTextAge = mRootView.findViewById(R.id.editTextAge);
         mEditTextComments = mRootView.findViewById(R.id.editTextComments);
@@ -51,9 +56,23 @@ public class DataFragment extends Fragment {
                 }, Util.ConverterCalendario(mEditTextBirthDate.getText().toString()));
             }
         });
+
+        loadData();
         return mRootView;
     }
-    public void save(){
+
+    private void loadData(){
+        Database mDbHelper = new Database(mRootView.getContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        mPatient = Paciente.ConsultarChave(db,codPatient);
+        if(mPatient!=null) {
+            mEditTextName.setText(mPatient.getNome());
+            mEditTextBirthDate.setText(Util.ConverterData(mPatient.getDataNacimento()));
+            mEditTextComments.setText(mPatient.getObservacao());
+        }
+
+    }
+    public void save() {
         Database mDbHelper = new Database(mRootView.getContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         Paciente patient = new Paciente();
@@ -61,7 +80,7 @@ public class DataFragment extends Fragment {
         patient.setNome(mEditTextName.getText().toString());
         patient.setDataNacimento(Util.ConverterStringDate(mEditTextBirthDate.getText().toString()));
         patient.setObservacao(mEditTextComments.getText().toString());
-        Paciente.InserirSQL(db,patient);
+        Paciente.InserirSQL(db, patient);
 
         //TODO esta gerando alarm para teste remover quando fizer tela de cadastro de alarms
         Alarm alarm = new Alarm();
@@ -84,9 +103,9 @@ public class DataFragment extends Fragment {
         alarm.setDataIncio(Calendar.getInstance().getTime());
 
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE,2);
+        calendar.add(Calendar.DATE, 2);
         alarm.setDataFim(calendar.getTime());
-        Alarm.InserirSQL(db,alarm);
+        Alarm.InserirSQL(db, alarm);
 
     }
 }

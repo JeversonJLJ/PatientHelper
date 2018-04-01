@@ -29,6 +29,8 @@ import com.unisinos.patienthelper.R;
 
 public class PatientActivity extends AppCompatActivity {
 
+    public static final String COD_PATIENT = "codPatient";
+    private long mCodPatient;
     private ViewPager mViewPager;
     private ViewPagerAdapter mAdapter;
     private AlarmsFragment mAlarmsFragment;
@@ -49,6 +51,11 @@ public class PatientActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient);
+        mCodPatient = -1;
+
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle != null)
+            mCodPatient = bundle.getLong(COD_PATIENT);
 
         mFabAddAlarm = (FloatingActionButton) findViewById(R.id.fab_new_alarm);
         mFabSaveAlarm = (FloatingActionButton) findViewById(R.id.fab_save_alarm);
@@ -77,9 +84,16 @@ public class PatientActivity extends AppCompatActivity {
         mTabLayout = (TabLayout) findViewById(R.id.tab_main);
         allotEachTabWithEqualWidth();
 
-        Bundle bundle = this.getIntent().getExtras();
-        if (bundle != null) {
-
+        if (mCodPatient >= 0) {
+            mFabAddAlarm.hide(false);
+            mFabSaveAlarm.hide(false);
+            mFabSavePatient.show(false);
+            mFabPatientEditMenu.setVisibility(View.GONE);
+            mFabAlarmEditMenu.setVisibility(View.GONE);
+            mFabMenuSaveAlarm.hide(false);
+            mFabMenuDeleteAlarm.hide(false);
+            mFabMenuSavePatient.hide(false);
+            mFabMenuDeletePatient.hide(false);
         } else {
             mFabAddAlarm.hide(false);
             mFabSaveAlarm.hide(false);
@@ -170,9 +184,12 @@ public class PatientActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mAlarmsFragment = new AlarmsFragment();
+        mAlarmsFragment.codPatient = mCodPatient;
         mDataFragment = new DataFragment();
-        mAdapter.addFragment(mDataFragment, "DADOS");
-        mAdapter.addFragment(mAlarmsFragment, "ALARM");
+        mDataFragment.codPatient = mCodPatient;
+
+        mAdapter.addFragment(mDataFragment, getString(R.string.data_text));
+        mAdapter.addFragment(mAlarmsFragment, getString(R.string.alarm_text));
 
         mViewPager.setAdapter(mAdapter);
     }

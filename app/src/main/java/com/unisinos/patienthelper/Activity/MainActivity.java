@@ -38,6 +38,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final int REQ_LOAD_PATIENT = 0;
+    public static final int REQ_CREATE_PATIENT = 1;
     Date mDay;
     TextView mTxtDate;
     TextView mTxtDayOfWeek;
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerAdapterSchedule(mAlarmList);
+        mAdapter = new RecyclerAdapterSchedule(this,mAlarmList);
         mRecyclerView.setAdapter(mAdapter);
         changeDate(mDay);
 
@@ -141,7 +143,7 @@ public class MainActivity extends AppCompatActivity
         Database mDbHelper = new Database(MainActivity.this);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         mAlarmList = Alarm.ConsultarSQL(db,mDay);
-        mAdapter = new RecyclerAdapterSchedule(mAlarmList);
+        mAdapter = new RecyclerAdapterSchedule(this,mAlarmList);
         mRecyclerView.setAdapter(mAdapter);
         mProgressBar.setVisibility(View.GONE);
 

@@ -15,7 +15,7 @@ import java.util.Date;
 public class Util {
 
     public static String ConverterDateString(Date data) {
-        String datetime="";
+        String datetime = "";
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         try {
             datetime = dateformat.format(data);
@@ -48,8 +48,8 @@ public class Util {
             });
     }
 
-    public static Date ConverterData (String data) {
-        if(data == null)
+    public static Date ConverterData(String data) {
+        if (data == null)
             return null;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
@@ -60,12 +60,16 @@ public class Util {
         return null;
     }
 
-    public static String ConverterData (Date data) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return sdf.format(data);
+    public static String ConverterData(Date data) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            return sdf.format(data);
+        } catch (Exception e) {
+            return "";
+        }
     }
 
-    public static Calendar ConverterCalendario (String data) {
+    public static Calendar ConverterCalendario(String data) {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
