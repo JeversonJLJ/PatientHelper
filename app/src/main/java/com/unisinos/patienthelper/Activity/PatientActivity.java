@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.unisinos.patienthelper.Adapters.ViewPagerAdapter;
+import com.unisinos.patienthelper.Class.Util;
 import com.unisinos.patienthelper.Fragment.AlarmsFragment;
 import com.unisinos.patienthelper.Fragment.DataFragment;
 import com.unisinos.patienthelper.R;
@@ -37,12 +38,8 @@ public class PatientActivity extends AppCompatActivity {
     private DataFragment mDataFragment;
     private TabLayout mTabLayout;
     private FloatingActionButton mFabAddAlarm;
-    private FloatingActionButton mFabSaveAlarm;
     private FloatingActionButton mFabSavePatient;
     private FloatingActionMenu mFabPatientEditMenu;
-    private FloatingActionMenu mFabAlarmEditMenu;
-    private FloatingActionButton mFabMenuSaveAlarm;
-    private FloatingActionButton mFabMenuDeleteAlarm;
     private FloatingActionButton mFabMenuSavePatient;
     private FloatingActionButton mFabMenuDeletePatient;
 
@@ -58,12 +55,8 @@ public class PatientActivity extends AppCompatActivity {
             mCodPatient = bundle.getLong(COD_PATIENT);
 
         mFabAddAlarm = (FloatingActionButton) findViewById(R.id.fab_new_alarm);
-        mFabSaveAlarm = (FloatingActionButton) findViewById(R.id.fab_save_alarm);
         mFabSavePatient = (FloatingActionButton) findViewById(R.id.fab_save_patient);
         mFabPatientEditMenu = (FloatingActionMenu) findViewById(R.id.fab_patient_edit_menu);
-        mFabAlarmEditMenu = (FloatingActionMenu) findViewById(R.id.fab_alarm_edit_menu);
-        mFabMenuSaveAlarm = (FloatingActionButton) findViewById(R.id.fab_menu_save_alarm);
-        mFabMenuDeleteAlarm = (FloatingActionButton) findViewById(R.id.fab_menu_delete_alarm);
         mFabMenuSavePatient = (FloatingActionButton) findViewById(R.id.fab_menu_save_patient);
         mFabMenuDeletePatient = (FloatingActionButton) findViewById(R.id.fab_menu_delete_patient);
 
@@ -85,27 +78,10 @@ public class PatientActivity extends AppCompatActivity {
         allotEachTabWithEqualWidth();
 
         if (mCodPatient >= 0) {
-            mFabAddAlarm.hide(false);
-            mFabSaveAlarm.hide(false);
-            mFabSavePatient.show(false);
-            mFabPatientEditMenu.setVisibility(View.GONE);
-            mFabAlarmEditMenu.setVisibility(View.GONE);
-            mFabMenuSaveAlarm.hide(false);
-            mFabMenuDeleteAlarm.hide(false);
-            mFabMenuSavePatient.hide(false);
-            mFabMenuDeletePatient.hide(false);
+            setTab(1);
         } else {
-            mFabAddAlarm.hide(false);
-            mFabSaveAlarm.hide(false);
-            mFabSavePatient.show(false);
-            mFabPatientEditMenu.setVisibility(View.GONE);
-            mFabAlarmEditMenu.setVisibility(View.GONE);
-            mFabMenuSaveAlarm.hide(false);
-            mFabMenuDeleteAlarm.hide(false);
-            mFabMenuSavePatient.hide(false);
-            mFabMenuDeletePatient.hide(false);
+            setTab(0);
         }
-
 
         clickButtons();
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -147,6 +123,13 @@ public class PatientActivity extends AppCompatActivity {
     }
 
     private void clickButtons() {
+        mFabMenuSavePatient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDataFragment.save();
+                finish();
+            }
+        });
         mFabSavePatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,6 +138,25 @@ public class PatientActivity extends AppCompatActivity {
             }
         });
 
+        mFabAddAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mCodPatient >= 0) {
+                    mAlarmsFragment.newAlarm();
+                } else {
+                    mDataFragment.save();
+                    setCodPatient(mDataFragment.codPatient);
+                    mAlarmsFragment.newAlarm();
+                }
+            }
+        });
+
+    }
+
+    private void setCodPatient(long codPatient) {
+        mCodPatient = codPatient;
+        mDataFragment.codPatient = codPatient;
+        mAlarmsFragment.codPatient = codPatient;
     }
 
     private void setTab(int position) {
@@ -163,9 +165,17 @@ public class PatientActivity extends AppCompatActivity {
         if (position == 1) {
             mFabAddAlarm.show(true);
             mFabSavePatient.hide(true);
+            mFabPatientEditMenu.hideMenu(true);
         } else {
             mFabAddAlarm.hide(true);
-            mFabSavePatient.show(true);
+            if (mCodPatient >= 0) {
+                mFabPatientEditMenu.showMenu(true);
+                mFabSavePatient.hide(false);
+            } else {
+                mFabPatientEditMenu.hideMenu(false);
+                mFabSavePatient.show(true);
+            }
+
         }
     }
 

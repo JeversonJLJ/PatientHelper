@@ -13,12 +13,16 @@ import android.widget.TextView;
 import com.unisinos.patienthelper.Activity.MainActivity;
 import com.unisinos.patienthelper.Adapters.RecyclerAdapterAlarm;
 import com.unisinos.patienthelper.Adapters.RecyclerAdapterSchedule;
+import com.unisinos.patienthelper.Class.Util;
 import com.unisinos.patienthelper.Database.Alarm;
 import com.unisinos.patienthelper.Database.Database;
+import com.unisinos.patienthelper.Dialog.Dialog;
 import com.unisinos.patienthelper.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by jever on 25/03/2018.
@@ -55,6 +59,43 @@ public class AlarmsFragment extends Fragment {
 
     }
 
+    public void newAlarm(){
+        Dialog.showDialogTimePicker(getActivity(), new Dialog.OnDialogTimePicker() {
+            @Override
+            public void onClickOkDialogTimePicker(String timeText) {
+                Database mDbHelper = new Database(mRootView.getContext());
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                final Alarm alarm = new Alarm();
+                alarm.setCodigo(Alarm.ObterProximoCodigo(db));
+                alarm.setCodPaciente(codPatient);
+                alarm.setAtivo(true);
+                alarm.setDomingo(true);
+                alarm.setSegunda(true);
+                alarm.setTerca(true);
+                alarm.setQuarta(true);
+                alarm.setQuinta(true);
+                alarm.setSexta(true);
+                alarm.setSabado(true);
+                alarm.setHorario(timeText);
+                alarm.setDescricao("");
+                alarm.setDataUltimoAviso(null);
+                alarm.setDataIncio(Calendar.getInstance().getTime());
+                alarm.setDataFim(null);
+                Alarm.InserirSQL(db, alarm);
+
+                mRecyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAlarmList.add(0,alarm);
+                        mAdapter.notifyItemChanged(0);
+                        mRecyclerView.smoothScrollToPosition(0);
+                    }
+                });
+
+
+            }
+        });
+    }
     private void loadData() {
         Database mDbHelper = new Database(mRootView.getContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();

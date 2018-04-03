@@ -214,8 +214,8 @@ public class Alarm {
         }
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         where += " And '" + format.format(date) + "' >= date(" + FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_INICIO + ")";
-        where += " And '" + format.format(date) + "' <= date(" + FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM + ")";
         where += " And " + FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO + " = 1";
+        where += " And ('" + format.format(date) + "' <= date(" + FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM + ") Or date("+ FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM + ") Is Null )";
         lista = ConsultarSQL(db, where);
 
         for (Alarm item : lista) {
@@ -245,6 +245,7 @@ public class Alarm {
         alarm.setAtivo(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO))==1?true:false);
         alarm.setDataIncio(Util.ConverterStringDate(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_INICIO))));
         alarm.setDataFim(Util.ConverterStringDate(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM))));
+
 
 
         return alarm;

@@ -54,6 +54,7 @@
                 android:id="@+id/textInputEditTextDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="false"
                 android:hint="@string/description_text" />
         </android.support.design.widget.TextInputLayout>
 
@@ -184,7 +185,7 @@
             android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutDaysOfTheWeek"
+            app:layout_constraintTop_toBottomOf="@+id/editTextFinishDate"
             app:srcCompat="@drawable/ic_delete_black" />
 
         <TextView
@@ -198,8 +199,7 @@
             android:text="@string/delete_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageButtonDelete"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutDaysOfTheWeek" />
-
+            app:layout_constraintTop_toBottomOf="@+id/editTextFinishDate" />
 
 
         <ImageButton
@@ -213,7 +213,7 @@
             android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutDaysOfTheWeek"
+            app:layout_constraintTop_toBottomOf="@+id/editTextFinishDate"
             app:srcCompat="@drawable/ic_arrow_down" />
 
         <TextView
@@ -247,6 +247,32 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/checkBoxFinishAt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/finish_at"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutDaysOfTheWeek" />
+
+        <EditText
+            android:id="@+id/editTextFinishDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="01/01/2018"
+            android:inputType="textNoSuggestions"
+            android:lines="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxFinishAt" />
 
 
     </android.support.constraint.ConstraintLayout>

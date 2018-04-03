@@ -61,28 +61,39 @@ public class DataFragment extends Fragment {
         return mRootView;
     }
 
-    private void loadData(){
+    private void loadData() {
         Database mDbHelper = new Database(mRootView.getContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        mPatient = Paciente.ConsultarChave(db,codPatient);
-        if(mPatient!=null) {
+        mPatient = Paciente.ConsultarChave(db, codPatient);
+        if (mPatient != null) {
             mEditTextName.setText(mPatient.getNome());
             mEditTextBirthDate.setText(Util.ConverterData(mPatient.getDataNacimento()));
             mEditTextComments.setText(mPatient.getObservacao());
         }
 
     }
+
     public void save() {
         Database mDbHelper = new Database(mRootView.getContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        Paciente patient = new Paciente();
-        patient.setCodigo(Paciente.ObterProximoCodigo(db));
-        patient.setNome(mEditTextName.getText().toString());
-        patient.setDataNacimento(Util.ConverterStringDate(mEditTextBirthDate.getText().toString()));
-        patient.setObservacao(mEditTextComments.getText().toString());
-        Paciente.InserirSQL(db, patient);
-
-        //TODO esta gerando alarm para teste remover quando fizer tela de cadastro de alarms
+        Paciente patient;
+        if (codPatient >= 0) {
+            patient = Paciente.ConsultarChave(db, codPatient);
+            patient.setCodigo(Paciente.ObterProximoCodigo(db));
+            patient.setNome(mEditTextName.getText().toString());
+            patient.setDataNacimento(Util.ConverterStringDate(mEditTextBirthDate.getText().toString()+ " 00:00:00"));
+            patient.setObservacao(mEditTextComments.getText().toString());
+            Paciente.AlterarSQL(db, patient);
+        } else {
+            patient = new Paciente();
+            patient.setCodigo(Paciente.ObterProximoCodigo(db));
+            patient.setNome(mEditTextName.getText().toString());
+            patient.setDataNacimento(Util.ConverterStringDate(mEditTextBirthDate.getText().toString()+ " 00:00:00"));
+            patient.setObservacao(mEditTextComments.getText().toString());
+            Paciente.InserirSQL(db, patient);
+            codPatient = patient.getCodigo();
+        }
+       /* //TODO esta gerando alarm para teste remover quando fizer tela de cadastro de alarms
         Alarm alarm = new Alarm();
         alarm.setCodigo(Alarm.ObterProximoCodigo(db));
         alarm.setCodPaciente(patient.getCodigo());
@@ -105,7 +116,7 @@ public class DataFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, 2);
         alarm.setDataFim(calendar.getTime());
-        Alarm.InserirSQL(db, alarm);
+        Alarm.InserirSQL(db, alarm);*/
 
     }
 }

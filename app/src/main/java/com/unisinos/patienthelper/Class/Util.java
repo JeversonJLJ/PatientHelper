@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by jever on 22/03/2018.
@@ -34,6 +35,13 @@ public class Util {
         try {
             data = new Date(format.parse(dataString).getTime());
         } catch (ParseException e) {
+            try {
+                SimpleDateFormat formatBr = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                data = new Date(format.parse(format.format(formatBr.parse(dataString))).getTime());
+            }
+            catch (ParseException e1){
+                e1.printStackTrace();
+            }
             e.printStackTrace();
         }
         return data;

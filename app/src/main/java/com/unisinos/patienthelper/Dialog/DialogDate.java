@@ -2,9 +2,11 @@ package com.unisinos.patienthelper.Dialog;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.widget.DatePicker;
 
 import com.unisinos.patienthelper.Class.Util;
+import com.unisinos.patienthelper.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,10 +46,18 @@ public  class DialogDate {
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        String date = String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear + 1) + "/" + String.valueOf(year);
+                        String date = String.format("%02d",dayOfMonth) + "/" + String.format("%02d",monthOfYear + 1) + "/" + String.valueOf(year);
                         onSelectedDate.onSelectedDate(Util.ConverterData(date),date);
                     }
                 }, year, month, day);
+
+        dpd.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel_text), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_NEGATIVE) {
+                    onSelectedDate.onSelectedDate(null,"");
+                }
+            }
+        });
         dpd.show();
     }
     public static void ShowData(Context context, DialogDate.OnSelectedDate onSelectedDate ,Calendar date) {
