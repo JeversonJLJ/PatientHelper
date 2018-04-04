@@ -98,6 +98,18 @@ public class Alarm {
             return false;
     }
 
+    public static boolean ExcluirSQL(SQLiteDatabase db, Paciente paciente) {
+        String selection = FeedReaderContract.FeedAlarm.COLUMN_NAME_CODIGO_PACIENTE + " = ?";
+        String[] selectionArgs = {paciente.getCodigo() + ""};
+
+        int count = db.delete(FeedReaderContract.FeedAlarm.TABLE_NAME, selection, selectionArgs);
+
+        if (count > 0)
+            return true;
+        else
+            return false;
+    }
+
 
     public static boolean AlterarSQL(SQLiteDatabase db, Alarm alarm) {
         if (!TestarCampos(db, alarm))

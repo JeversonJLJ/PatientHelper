@@ -121,5 +121,15 @@ public class Dialog {
 
     }
 
+    public static void showDialogYesNo(final Activity context, String title, String message, DialogInterface.OnClickListener clickYes, DialogInterface.OnClickListener clickNo) {
+
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.yes_text, clickYes);
+        builder.setNegativeButton(R.string.no_text, clickNo);
+        builder.show();
+    }
+
 }
 

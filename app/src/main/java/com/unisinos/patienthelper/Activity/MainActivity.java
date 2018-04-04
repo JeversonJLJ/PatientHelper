@@ -110,10 +110,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 mFabMenu.close(true);
                 Intent intent = new Intent(activity, PatientActivity.class);
-                //Bundle bundle = new Bundle();
-               // bundle.putLong(FeedReaderContract.FeedPedidos.COLUMN_NAME_CODPEDIDO, itemPedido.getCodPedido());
-                //intent.putExtras(bundle);
-                activity.startActivity(intent);
+                activity.startActivityForResult(intent,REQ_CREATE_PATIENT);
             }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -166,6 +163,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+       loadData();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

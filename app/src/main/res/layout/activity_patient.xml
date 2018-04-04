@@ -103,7 +103,7 @@
         fab:menu_colorPressed="@color/colorAccentLight"
         fab:menu_colorRipple="@color/colorFabRipple"
         fab:menu_fab_size="normal"
-        fab:menu_icon="@drawable/fab_add"
+        fab:menu_icon="@drawable/ic_action_edit"
         fab:menu_labels_colorNormal="@color/colorFabLabelNormal"
         fab:menu_labels_colorPressed="@color/colorFabLabelPressed"
         fab:menu_labels_colorRipple="@color/colorFabLabelRipple"

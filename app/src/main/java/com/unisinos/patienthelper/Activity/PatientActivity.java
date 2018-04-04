@@ -57,6 +57,7 @@ public class PatientActivity extends AppCompatActivity {
         mFabAddAlarm = (FloatingActionButton) findViewById(R.id.fab_new_alarm);
         mFabSavePatient = (FloatingActionButton) findViewById(R.id.fab_save_patient);
         mFabPatientEditMenu = (FloatingActionMenu) findViewById(R.id.fab_patient_edit_menu);
+        mFabPatientEditMenu.setIconAnimated(false);
         mFabMenuSavePatient = (FloatingActionButton) findViewById(R.id.fab_menu_save_patient);
         mFabMenuDeletePatient = (FloatingActionButton) findViewById(R.id.fab_menu_delete_patient);
 
@@ -126,17 +127,27 @@ public class PatientActivity extends AppCompatActivity {
         mFabMenuSavePatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDataFragment.save();
-                finish();
+                mDataFragment.save(true);
+
             }
         });
+
+        mFabMenuDeletePatient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDataFragment.delete();
+
+            }
+        });
+
         mFabSavePatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDataFragment.save();
-                finish();
+                mDataFragment.save(true);
+
             }
         });
+
 
         mFabAddAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +155,7 @@ public class PatientActivity extends AppCompatActivity {
                 if (mCodPatient >= 0) {
                     mAlarmsFragment.newAlarm();
                 } else {
-                    mDataFragment.save();
+                    mDataFragment.save(false);
                     setCodPatient(mDataFragment.codPatient);
                     mAlarmsFragment.newAlarm();
                 }

@@ -326,8 +326,6 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
                 Database mDbHelper = new Database(activity);
                 SQLiteDatabase db = mDbHelper.getWritableDatabase();
                 Alarm alarm = Alarm.ConsultarChave(db, holder.mCodAlarm);
-                alarm.setCodigo(holder.mCodAlarm);
-                alarm.setCodPaciente(holder.mCodPatient);
                 alarm.setHorario(holder.mTextViewTime.getText().toString());
                 alarm.setDescricao(holder.mTextInputEditTextDescription.getText().toString());
                 alarm.setAtivo(holder.mSwitchActive.isChecked());
