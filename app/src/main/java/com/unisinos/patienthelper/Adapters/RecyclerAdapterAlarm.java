@@ -171,7 +171,7 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
         holder.mTextInputEditTextDescription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog.showDialogImputText(activity, activity.getString(R.string.description_text), new Dialog.OnDialogImputText() {
+                Dialog.showDialogImputText(activity, holder.mTextInputEditTextDescription.getText().toString() ,activity.getString(R.string.description_text), new Dialog.OnDialogImputText() {
                     @Override
                     public void onClickOkDialogImputText(String imputText) {
                         holder.mTextInputEditTextDescription.setText(imputText);
@@ -363,8 +363,6 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
             holder.mTextViewDelete.setVisibility(View.VISIBLE);
             holder.mImageButtonShowHide.animate().rotation(180).start();
             holder.mProgressBar.setVisibility(View.GONE);
-
-
         } else {
             holder.mTextViewTime.setVisibility(View.VISIBLE);
             holder.mSwitchActive.setVisibility(View.VISIBLE);

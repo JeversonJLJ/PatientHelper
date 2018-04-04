@@ -2,10 +2,15 @@ package com.unisinos.patienthelper.Dialog;
 
 import android.app.Activity;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TimePicker;
 
 import com.unisinos.patienthelper.R;
@@ -41,14 +46,26 @@ public class Dialog {
         void onClickOkDialogImputText(String imputText);
     }
 
-    public static void showDialogImputText(Activity activity, String message, final OnDialogImputText onDialogImputText) {
+    public static void showDialogImputText(Activity activity, String lastText, String title, final OnDialogImputText onDialogImputText) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("Title");
+        AlertDialog dialog;
+        builder.setTitle(title);
 
+        LinearLayout container = new LinearLayout(activity);
+        container.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(50, 50, 50, 50);
         final EditText input = new EditText(activity);
-
+        input.setLayoutParams(lp);
+        input.setGravity(android.view.Gravity.TOP|android.view.Gravity.LEFT);
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-        builder.setView(input);
+        input.setLines(1);
+        input.setMaxLines(1);
+        input.setText(lastText);
+        container.addView(input,lp);
+
+
+        builder.setView(container);
 
         builder.setPositiveButton(R.string.ok_text, new DialogInterface.OnClickListener() {
             @Override
@@ -62,9 +79,26 @@ public class Dialog {
                 dialog.cancel();
             }
         });
-
-        builder.show();
-
+        dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+       /* dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                input.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        final InputMethodManager imm = (InputMethodManager) input.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
+                        input.requestFocus(); // needed if you have more then one input
+                        input.selectAll();
+                    }
+                });
+            }
+        });*/
+        input.requestFocus();
+        input.selectAll();
+        dialog.show();
     }
 
     public interface OnDialogTimePicker {

@@ -65,7 +65,7 @@ public class AlarmsFragment extends Fragment {
             public void onClickOkDialogTimePicker(String timeText) {
                 Database mDbHelper = new Database(mRootView.getContext());
                 SQLiteDatabase db = mDbHelper.getWritableDatabase();
-                final Alarm alarm = new Alarm();
+                Alarm alarm = new Alarm();
                 alarm.setCodigo(Alarm.ObterProximoCodigo(db));
                 alarm.setCodPaciente(codPatient);
                 alarm.setAtivo(true);
@@ -83,12 +83,12 @@ public class AlarmsFragment extends Fragment {
                 alarm.setDataFim(null);
                 Alarm.InserirSQL(db, alarm);
 
+                mAlarmList.add(alarm);
                 mRecyclerView.post(new Runnable() {
                     @Override
                     public void run() {
-                        mAlarmList.add(0,alarm);
-                        mAdapter.notifyItemChanged(0);
-                        mRecyclerView.smoothScrollToPosition(0);
+                        mAdapter.notifyItemChanged(mAlarmList.size()-1);
+                        mRecyclerView.smoothScrollToPosition(mAlarmList.size()-1);
                     }
                 });
 

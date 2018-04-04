@@ -22,6 +22,7 @@
         <activity
             android:name=".Activity.PatientActivity"
             android:label="@string/title_activity_patient"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
