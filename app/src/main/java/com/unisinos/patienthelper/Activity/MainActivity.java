@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+
 import com.github.clans.fab.FloatingActionButton;
+
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +29,8 @@ import com.unisinos.patienthelper.Adapters.AdapterSchedule;
 import com.unisinos.patienthelper.Adapters.RecyclerAdapterSchedule;
 import com.unisinos.patienthelper.Database.Alarm;
 import com.unisinos.patienthelper.Database.Database;
+import com.unisinos.patienthelper.Database.Paciente;
+import com.unisinos.patienthelper.Dialog.DialogSearch;
 import com.unisinos.patienthelper.R;
 
 import java.text.SimpleDateFormat;
@@ -65,10 +69,9 @@ public class MainActivity extends AppCompatActivity
         mTxtDate = (TextView) findViewById(R.id.date_text);
         mTxtDayOfWeek = (TextView) findViewById(R.id.day_of_week_text);
         mBtnNextDay = (ImageButton) findViewById(R.id.next_day);
-        mBtnPreviousDay= (ImageButton) findViewById(R.id.previous_day);
+        mBtnPreviousDay = (ImageButton) findViewById(R.id.previous_day);
         mProgressBar = findViewById(R.id.progressBar);
         mDay = Calendar.getInstance().getTime();
-
 
 
         mBtnNextDay.setOnClickListener(new View.OnClickListener() {
@@ -96,12 +99,22 @@ public class MainActivity extends AppCompatActivity
         mFabAddPatient = (FloatingActionButton) findViewById(R.id.fab_add_patient);
 
 
-
-
         mFabAddAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mFabMenu.close(true);
+                DialogSearch.ShowPatients(activity, new DialogSearch.OnSelectedItemListener() {
+                    @Override
+                    public void onSelectedItem(Object item, int index) {
+                        final Paciente patient = (Paciente) item;
+                        Intent intent = new Intent(activity, PatientActivity.class);
+                        Bundle bundle = new Bundle();
+
+                        bundle.putLong(PatientActivity.COD_PATIENT, patient.getCodigo());
+                        intent.putExtras(bundle);
+                        activity.startActivityForResult(intent, MainActivity.REQ_LOAD_PATIENT);
+                    }
+                });
             }
         });
 
@@ -110,7 +123,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 mFabMenu.close(true);
                 Intent intent = new Intent(activity, PatientActivity.class);
-                activity.startActivityForResult(intent,REQ_CREATE_PATIENT);
+                activity.startActivityForResult(intent, REQ_CREATE_PATIENT);
             }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -129,23 +142,24 @@ public class MainActivity extends AppCompatActivity
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerAdapterSchedule(this,mAlarmList);
+        mAdapter = new RecyclerAdapterSchedule(this, mAlarmList);
         mRecyclerView.setAdapter(mAdapter);
         changeDate(mDay);
 
 
     }
 
-    private void loadData(){
+    private void loadData() {
         Database mDbHelper = new Database(MainActivity.this);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        mAlarmList = Alarm.ConsultarSQL(db,mDay);
-        mAdapter = new RecyclerAdapterSchedule(this,mAlarmList);
+        mAlarmList = Alarm.ConsultarSQL(db, mDay);
+        mAdapter = new RecyclerAdapterSchedule(this, mAlarmList);
         mRecyclerView.setAdapter(mAdapter);
         mProgressBar.setVisibility(View.GONE);
 
     }
-    private void changeDate(Date date){
+
+    private void changeDate(Date date) {
         mDay = date;
         SimpleDateFormat df = new SimpleDateFormat("dd MMMM yyyy");
         mTxtDate.setText(df.format(mDay).toUpperCase());
@@ -153,6 +167,7 @@ public class MainActivity extends AppCompatActivity
         mTxtDayOfWeek.setText(df.format(mDay).toUpperCase());
         loadData();
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -166,8 +181,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-       loadData();
+        loadData();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

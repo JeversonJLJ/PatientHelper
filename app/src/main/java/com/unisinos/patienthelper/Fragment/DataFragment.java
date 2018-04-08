@@ -10,18 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.unisinos.patienthelper.Adapters.RecyclerAdapterSchedule;
 import com.unisinos.patienthelper.Database.Alarm;
 import com.unisinos.patienthelper.Database.Database;
 import com.unisinos.patienthelper.Database.Paciente;
-import com.unisinos.patienthelper.Dialog.Dialog;
+import com.unisinos.patienthelper.Dialog.DialogApp;
 import com.unisinos.patienthelper.Dialog.DialogDate;
 import com.unisinos.patienthelper.R;
 import com.unisinos.patienthelper.Class.Util;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
 
 /**
  * Created by jever on 25/03/2018.
@@ -93,7 +91,7 @@ public class DataFragment extends Fragment {
         Database mDbHelper = new Database(mRootView.getContext());
         final SQLiteDatabase db = mDbHelper.getWritableDatabase();
         final Paciente patient = Paciente.ConsultarChave(db, codPatient);
-        Dialog.showDialogYesNo(getActivity(), getString(R.string.delete_text), getString(R.string.delete_patient_question_text), new DialogInterface.OnClickListener() {
+        DialogApp.showDialogYesNo(getActivity(), getString(R.string.delete_text), getString(R.string.delete_patient_question_text), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Paciente.ExcluirSQL(db, patient);

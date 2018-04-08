@@ -16,7 +16,7 @@ import java.util.List;
  * Created by jever on 21/03/2018.
  */
 
-public class Alarm {
+public class Alarm implements Cloneable  {
 
     private long codigo;
 
@@ -50,6 +50,16 @@ public class Alarm {
 
     private Paciente paciente;
 
+
+    public Alarm getClone() {
+        try {
+            // call clone in Object.
+            return (Alarm) super.clone();
+        } catch (CloneNotSupportedException e) {
+            System.out.println (" Cloning not allowed. " );
+            return this;
+        }
+    }
 
     public static boolean TestarCampos(SQLiteDatabase db, Alarm alarm) {
         return true;

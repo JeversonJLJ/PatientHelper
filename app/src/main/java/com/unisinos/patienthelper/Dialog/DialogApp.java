@@ -1,17 +1,16 @@
 package com.unisinos.patienthelper.Dialog;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.unisinos.patienthelper.R;
 
@@ -21,26 +20,9 @@ import java.util.Calendar;
  * Created by jever on 02/04/2018.
  */
 
-public class Dialog {
-
-/*
-    public interface OnClickOkDialogMessage {
-        void onClickOkDialogMessage();
-    }
-
-    public static void showDialogMessage(Activity activity, String message, final OnClickOkDialogMessage onDialogMessage) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AlertDialogStyle);
-        builder.setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton(activity.getString(R.string.ok_message_dialog), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        onDialogMessage.onClickOkDialogMessage();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-
-    }*/
+public class DialogApp {
+    public static ProgressDialog progress;
+    public static Activity context;
 
     public interface OnDialogImputText {
         void onClickOkDialogImputText(String imputText);
@@ -130,6 +112,56 @@ public class Dialog {
         builder.setNegativeButton(R.string.no_text, clickNo);
         builder.show();
     }
+
+
+
+    public static void CloseProgress() {
+        if (context == null)
+            return;
+        try {
+            context.runOnUiThread(new Runnable() {
+                public void run() {
+                    if (progress == null) {
+                        return;
+                    }
+                    if (progress.isShowing()) {
+                        progress.hide();
+                    }
+                    progress.dismiss();
+                    progress = null;
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
+        }
+
+    }
+
+    public static void ShowProgress(final Activity contexto, final String texto) {
+        ShowProgress(contexto,texto,null);
+    }
+
+    public static void ShowProgress(final Activity context, final String texto, final DialogInterface.OnCancelListener onCancelListener) {
+        DialogApp.context = context;
+        CloseProgress();
+        context.runOnUiThread(new Runnable() {
+            public void run() {
+                progress = new ProgressDialog(context);
+                if (!progress.isShowing()) {
+                    progress.setMessage(texto);
+                    progress.setTitle(context.getString(R.string.wait_text));
+                    progress.show();
+                    if(onCancelListener != null){
+                        progress.setCanceledOnTouchOutside(false);
+                        progress.setOnCancelListener(onCancelListener);
+                    }else{
+                        progress.setCancelable(false);
+                    }
+                }
+            }
+        });
+    }
+
 
 }
 

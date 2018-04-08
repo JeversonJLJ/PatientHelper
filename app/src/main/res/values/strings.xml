@@ -32,5 +32,15 @@
     <string name="yes_text">Sim</string>
     <string name="no_text">Não</string>
     <string name="delete_patient_question_text">Tem certeza que deseja excluir o paciente ?</string>
+    <string name="alarm_deleted_text">Alarm foi excluido!</string>
+    <string name="alarm_restored">Alarm foi restaurado!</string>
+    <string name="undo_text">DESFAZER</string>
+    <string name="hint_search">Pesquise aqui</string>
+    <string name="label_cancel">CANCELAR</string>
+    <string name="label_ok">OK</string>
+    <string name="nothing_to_show">Nenhum item listado!</string>
+    <string name="wait_text">Aguarde</string>
+    <string name="select_patient">Selecione o paciente</string>
+    <string name="loading_patients">Carregando Pacientes</string>
 
 </resources>

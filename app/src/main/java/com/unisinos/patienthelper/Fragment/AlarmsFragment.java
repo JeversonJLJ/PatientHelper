@@ -8,21 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.unisinos.patienthelper.Activity.MainActivity;
 import com.unisinos.patienthelper.Adapters.RecyclerAdapterAlarm;
-import com.unisinos.patienthelper.Adapters.RecyclerAdapterSchedule;
-import com.unisinos.patienthelper.Class.Util;
 import com.unisinos.patienthelper.Database.Alarm;
 import com.unisinos.patienthelper.Database.Database;
-import com.unisinos.patienthelper.Dialog.Dialog;
+import com.unisinos.patienthelper.Dialog.DialogApp;
 import com.unisinos.patienthelper.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by jever on 25/03/2018.
@@ -60,7 +55,7 @@ public class AlarmsFragment extends Fragment {
     }
 
     public void newAlarm(){
-        Dialog.showDialogTimePicker(getActivity(), new Dialog.OnDialogTimePicker() {
+        DialogApp.showDialogTimePicker(getActivity(), new DialogApp.OnDialogTimePicker() {
             @Override
             public void onClickOkDialogTimePicker(String timeText) {
                 Database mDbHelper = new Database(mRootView.getContext());

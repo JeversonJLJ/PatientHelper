@@ -1,9 +1,9 @@
 package com.unisinos.patienthelper.Adapters;
 
 import android.app.Activity;
-import android.app.TimePickerDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.transition.AutoTransition;
@@ -19,17 +19,15 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
 import com.unisinos.patienthelper.Class.Util;
 import com.unisinos.patienthelper.Database.Alarm;
 import com.unisinos.patienthelper.Database.Database;
-import com.unisinos.patienthelper.Dialog.Dialog;
+import com.unisinos.patienthelper.Dialog.DialogApp;
 import com.unisinos.patienthelper.Dialog.DialogDate;
 import com.unisinos.patienthelper.R;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +39,8 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
 
     private List<Alarm> list;
     private Activity activity;
-
+    private float mViewMinimized;
+    private float mViewMaximized;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -151,7 +150,7 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
         holder.mTextViewTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog.showDialogTimePicker(activity, new Dialog.OnDialogTimePicker() {
+                DialogApp.showDialogTimePicker(activity, new DialogApp.OnDialogTimePicker() {
                     @Override
                     public void onClickOkDialogTimePicker(String timeText) {
                         holder.mTextViewTime.setText(timeText);
@@ -171,7 +170,7 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
         holder.mTextInputEditTextDescription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog.showDialogImputText(activity, holder.mTextInputEditTextDescription.getText().toString() ,activity.getString(R.string.description_text), new Dialog.OnDialogImputText() {
+                DialogApp.showDialogImputText(activity, holder.mTextInputEditTextDescription.getText().toString(), activity.getString(R.string.description_text), new DialogApp.OnDialogImputText() {
                     @Override
                     public void onClickOkDialogImputText(String imputText) {
                         holder.mTextInputEditTextDescription.setText(imputText);
@@ -276,12 +275,14 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
             }
         });
 
-        holder.mImageButtonDelete.setOnClickListener(new View.OnClickListener() {
+
+        View.OnClickListener viewDelete = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Database mDbHelper = new Database(activity);
                 SQLiteDatabase db = mDbHelper.getWritableDatabase();
-                Alarm alarm = Alarm.ConsultarChave(db, holder.mCodAlarm);
+
+                final Alarm alarm = Alarm.ConsultarChave(db, holder.mCodAlarm);
                 Alarm.ExcluirSQL(db, alarm);
                 for (Alarm item : list) {
                     if (item.getCodigo() == alarm.getCodigo()) {
@@ -290,19 +291,37 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
                     }
                 }
                 callNotifyDataSetChanged();
+                Snackbar snackbar = Snackbar
+                        .make(activity.findViewById(android.R.id.content), R.string.alarm_deleted_text, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.undo_text, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                list.add(alarm);
+                                newAlarm(alarm);
+                                callNotifyDataSetChanged();
+                                Snackbar snackbar1 = Snackbar.make(activity.findViewById(android.R.id.content), R.string.alarm_restored, Snackbar.LENGTH_SHORT);
+                                snackbar1.show();
+                            }
+                        });
+
+                snackbar.show();
 
 
             }
-        });
+        };
+
+        holder.mImageButtonDelete.setOnClickListener(viewDelete);
+        holder.mTextViewDelete.setOnClickListener(viewDelete);
+
 
 
         holder.mRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (holder.mTextViewDelete.getVisibility() == View.GONE)
-                    changeLayout(holder, true);
+                    changeLayout(holder, true, true);
                 else
-                    changeLayout(holder, false);
+                    changeLayout(holder, false, true);
             }
         });
 
@@ -310,9 +329,9 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
             @Override
             public void onClick(View view) {
                 if (holder.mTextViewDelete.getVisibility() == View.GONE)
-                    changeLayout(holder, true);
+                    changeLayout(holder, true, true);
                 else
-                    changeLayout(holder, false);
+                    changeLayout(holder, false, true);
             }
         });
 
@@ -343,37 +362,94 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
 
     }
 
-    private void changeLayout(RecyclerAdapterAlarm.ViewHolder holder, boolean expanded) {
-        TransitionManager.beginDelayedTransition(holder.mRoot, new AutoTransition());
-        if (expanded) {
-            holder.mTextViewTime.setVisibility(View.VISIBLE);
-            holder.mSwitchActive.setVisibility(View.VISIBLE);
-            holder.mTextViewDescription.setVisibility(View.GONE);
-            holder.mTextInputLayoutDescription.setVisibility(View.VISIBLE);
-            holder.mConstraintLayoutDaysOfTheWeek.setVisibility(View.VISIBLE);
-            holder.mCheckBoxFinishAt.setVisibility(View.VISIBLE);
-            if (holder.mCheckBoxFinishAt.isChecked()) {
-                holder.mEditTextFinishDate.setVisibility(View.VISIBLE);
-            } else {
-                holder.mEditTextFinishDate.setVisibility(View.GONE);
+    private void newAlarm(final Alarm alarm) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Database mDbHelper = new Database(activity);
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                Alarm.InserirSQL(db, alarm);
             }
-            holder.mImageButtonDelete.setVisibility(View.VISIBLE);
-            holder.mTextViewDelete.setVisibility(View.VISIBLE);
-            holder.mImageButtonShowHide.animate().rotation(180).start();
-            holder.mProgressBar.setVisibility(View.GONE);
+        }).start();
+
+    }
+
+    private void changeLayout(final RecyclerAdapterAlarm.ViewHolder holder, boolean expanded) {
+        changeLayout(holder, expanded, false);
+    }
+
+    private void changeLayout(final RecyclerAdapterAlarm.ViewHolder holder, boolean expanded, final boolean animated) {
+
+        if (animated) {
+            TransitionManager.beginDelayedTransition(((ViewGroup) activity.findViewById(android.R.id.content)), new AutoTransition());
+            if (expanded) {
+
+                holder.mTextViewTime.setVisibility(View.VISIBLE);
+                holder.mSwitchActive.setVisibility(View.VISIBLE);
+                holder.mTextViewDescription.setVisibility(View.GONE);
+                holder.mTextInputLayoutDescription.setVisibility(View.VISIBLE);
+                holder.mConstraintLayoutDaysOfTheWeek.setVisibility(View.VISIBLE);
+                holder.mCheckBoxFinishAt.setVisibility(View.VISIBLE);
+                if (holder.mCheckBoxFinishAt.isChecked()) {
+                    holder.mEditTextFinishDate.setVisibility(View.VISIBLE);
+                } else {
+                    holder.mEditTextFinishDate.setVisibility(View.GONE);
+                }
+                holder.mImageButtonDelete.setVisibility(View.VISIBLE);
+                holder.mTextViewDelete.setVisibility(View.VISIBLE);
+                holder.mImageButtonShowHide.animate().rotation(180).start();
+                holder.mProgressBar.setVisibility(View.GONE);
+            } else {
+                mViewMaximized = holder.mRoot.getY();
+                holder.mTextViewTime.setVisibility(View.VISIBLE);
+                holder.mSwitchActive.setVisibility(View.VISIBLE);
+                holder.mTextViewDescription.setVisibility(View.VISIBLE);
+                holder.mTextViewDescription.setText(holder.mTextInputEditTextDescription.getText().toString());
+                holder.mTextInputLayoutDescription.setVisibility(View.GONE);
+                holder.mConstraintLayoutDaysOfTheWeek.setVisibility(View.GONE);
+                holder.mCheckBoxFinishAt.setVisibility(View.GONE);
+                holder.mEditTextFinishDate.setVisibility(View.GONE);
+                holder.mImageButtonDelete.setVisibility(View.GONE);
+                holder.mTextViewDelete.setVisibility(View.GONE);
+                holder.mImageButtonShowHide.animate().rotation(0).start();
+                holder.mProgressBar.setVisibility(View.GONE);
+                mViewMinimized = holder.mRoot.getY();
+
+            }
         } else {
-            holder.mTextViewTime.setVisibility(View.VISIBLE);
-            holder.mSwitchActive.setVisibility(View.VISIBLE);
-            holder.mTextViewDescription.setVisibility(View.VISIBLE);
-            holder.mTextViewDescription.setText(holder.mTextInputEditTextDescription.getText().toString());
-            holder.mTextInputLayoutDescription.setVisibility(View.GONE);
-            holder.mConstraintLayoutDaysOfTheWeek.setVisibility(View.GONE);
-            holder.mCheckBoxFinishAt.setVisibility(View.GONE);
-            holder.mEditTextFinishDate.setVisibility(View.GONE);
-            holder.mImageButtonDelete.setVisibility(View.GONE);
-            holder.mTextViewDelete.setVisibility(View.GONE);
-            holder.mImageButtonShowHide.animate().rotation(0).start();
-            holder.mProgressBar.setVisibility(View.GONE);
+            if (expanded) {
+                holder.mTextViewTime.setVisibility(View.VISIBLE);
+                holder.mSwitchActive.setVisibility(View.VISIBLE);
+                holder.mTextViewDescription.setVisibility(View.GONE);
+                holder.mTextInputLayoutDescription.setVisibility(View.VISIBLE);
+                holder.mConstraintLayoutDaysOfTheWeek.setVisibility(View.VISIBLE);
+                holder.mCheckBoxFinishAt.setVisibility(View.VISIBLE);
+                if (holder.mCheckBoxFinishAt.isChecked()) {
+                    holder.mEditTextFinishDate.setVisibility(View.VISIBLE);
+                } else {
+                    holder.mEditTextFinishDate.setVisibility(View.GONE);
+                }
+                holder.mImageButtonDelete.setVisibility(View.VISIBLE);
+                holder.mTextViewDelete.setVisibility(View.VISIBLE);
+                holder.mImageButtonShowHide.animate().rotation(180).start();
+                holder.mProgressBar.setVisibility(View.GONE);
+            } else {
+                mViewMaximized = holder.mRoot.getY();
+                holder.mTextViewTime.setVisibility(View.VISIBLE);
+                holder.mSwitchActive.setVisibility(View.VISIBLE);
+                holder.mTextViewDescription.setVisibility(View.VISIBLE);
+                holder.mTextViewDescription.setText(holder.mTextInputEditTextDescription.getText().toString());
+                holder.mTextInputLayoutDescription.setVisibility(View.GONE);
+                holder.mConstraintLayoutDaysOfTheWeek.setVisibility(View.GONE);
+                holder.mCheckBoxFinishAt.setVisibility(View.GONE);
+                holder.mEditTextFinishDate.setVisibility(View.GONE);
+                holder.mImageButtonDelete.setVisibility(View.GONE);
+                holder.mTextViewDelete.setVisibility(View.GONE);
+                holder.mImageButtonShowHide.animate().rotation(0).start();
+                holder.mProgressBar.setVisibility(View.GONE);
+                mViewMinimized = holder.mRoot.getY();
+
+            }
         }
 
     }
