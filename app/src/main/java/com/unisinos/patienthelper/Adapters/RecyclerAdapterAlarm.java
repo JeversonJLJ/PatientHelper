@@ -154,7 +154,7 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
                     @Override
                     public void onClickOkDialogTimePicker(String timeText) {
                         holder.mTextViewTime.setText(timeText);
-                        save(holder);
+                        save(holder,true);
                     }
                 });
             }
@@ -314,7 +314,6 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
         holder.mTextViewDelete.setOnClickListener(viewDelete);
 
 
-
         holder.mRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -339,6 +338,11 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
     }
 
     private void save(final RecyclerAdapterAlarm.ViewHolder holder) {
+        save(holder,false);
+
+    }
+
+    private void save(final RecyclerAdapterAlarm.ViewHolder holder, final boolean resetLastNotification) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -356,6 +360,8 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
                 alarm.setSexta(holder.mToggleButtonFriday.isChecked());
                 alarm.setSabado(holder.mToggleButtonSaturday.isChecked());
                 alarm.setDataFim(Util.ConverterStringDate(holder.mEditTextFinishDate.getText().toString() + " 00:00:00"));
+                if (resetLastNotification)
+                    alarm.setDataUltimoAviso(null);
                 Alarm.AlterarSQL(db, alarm);
             }
         }).start();

@@ -113,6 +113,7 @@ public class DataFragment extends Fragment {
         Database mDbHelper = new Database(mRootView.getContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         Paciente patient;
+
         if (codPatient >= 0) {
             patient = Paciente.ConsultarChave(db, codPatient);
             patient.setNome(mEditTextName.getText().toString());

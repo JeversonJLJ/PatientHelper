@@ -1,13 +1,17 @@
 package com.unisinos.patienthelper.Activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.github.clans.fab.FloatingActionButton;
 
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -32,6 +36,7 @@ import com.unisinos.patienthelper.Database.Database;
 import com.unisinos.patienthelper.Database.Paciente;
 import com.unisinos.patienthelper.Dialog.DialogSearch;
 import com.unisinos.patienthelper.R;
+import com.unisinos.patienthelper.Service.ServiceAlarm;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -107,12 +112,15 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onSelectedItem(Object item, int index) {
                         final Paciente patient = (Paciente) item;
+
                         Intent intent = new Intent(activity, PatientActivity.class);
                         Bundle bundle = new Bundle();
 
                         bundle.putLong(PatientActivity.COD_PATIENT, patient.getCodigo());
                         intent.putExtras(bundle);
                         activity.startActivityForResult(intent, MainActivity.REQ_LOAD_PATIENT);
+
+
                     }
                 });
             }
@@ -145,6 +153,10 @@ public class MainActivity extends AppCompatActivity
         mAdapter = new RecyclerAdapterSchedule(this, mAlarmList);
         mRecyclerView.setAdapter(mAdapter);
         changeDate(mDay);
+
+        Intent serviceIntent = new Intent(getBaseContext(), ServiceAlarm.class);
+        startService(serviceIntent);
+
 
 
     }
