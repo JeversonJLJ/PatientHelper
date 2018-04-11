@@ -91,11 +91,12 @@ public class ServiceAlarm extends Service {
                                     notifiedToday = true;
                             }
 
-                            if (calendarAlarm.get(Calendar.HOUR) <= calendarNow.get(Calendar.HOUR) &&
-                                    calendarAlarm.get(Calendar.MINUTE) <= calendarNow.get(Calendar.MINUTE)) {
+                            if (calendarAlarm.get(Calendar.HOUR_OF_DAY) == calendarNow.get(Calendar.HOUR_OF_DAY) &&
+                                    Math.abs(calendarAlarm.get(Calendar.MINUTE) - calendarNow.get(Calendar.MINUTE))<=5) {
                                 if (!notifiedToday) {
                                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, String.valueOf(lastID))
-                                            .setSmallIcon(R.drawable.ic_action_add_alarm)
+                                            .setSmallIcon(R.drawable.ic_medication_time)
+                                            .setColor(getResources().getColor(R.color.colorAccent))
                                             .setContentTitle(alarm.getPaciente().getNome())
                                             .setContentText(alarm.getDescricao())
                                             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))

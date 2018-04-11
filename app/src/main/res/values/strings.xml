@@ -1,9 +1,7 @@
 <resources>
-    <string name="app_name">Patient Helper</string>
-
+    <string name="app_name">Auxilio Pacientes</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
     <string name="add_patient_text">Adicionar Paciente</string>
     <string name="add_alarm_text">Adicionar Alarm</string>
@@ -42,5 +40,6 @@
     <string name="wait_text">Aguarde</string>
     <string name="select_patient">Selecione o paciente</string>
     <string name="loading_patients">Carregando Pacientes</string>
+    <string name="patient">Paciente</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.unisinos.patienthelper.Activity;
 
+import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
@@ -230,10 +231,9 @@ public class PatientActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
-        }
-
+        }*/
         if (id == android.R.id.home) {
             finish();
             return true;
