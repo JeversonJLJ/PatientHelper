@@ -16,7 +16,7 @@ import java.util.List;
  * Created by jever on 21/03/2018.
  */
 
-public class Alarm implements Cloneable  {
+public class Alarm implements Cloneable {
 
     private long codigo;
 
@@ -51,13 +51,12 @@ public class Alarm implements Cloneable  {
     private Paciente paciente;
 
 
-
     public Alarm getClone() {
         try {
             // call clone in Object.
             return (Alarm) super.clone();
         } catch (CloneNotSupportedException e) {
-            System.out.println (" Cloning not allowed. " );
+            System.out.println(" Cloning not allowed. ");
             return this;
         }
     }
@@ -122,16 +121,19 @@ public class Alarm implements Cloneable  {
     }
 
 
-    private static List<Alarm> ordernarPorHorario(List<Alarm> lista){
+    private static List<Alarm> ordernarPorHorario(List<Alarm> lista) {
         List<Alarm> listaOrdenada = new ArrayList<Alarm>();
 
-      /*  int menorHora = 24;
-        int menorMinuto =60;
-        for(Alarm alarm:lista)
-        {
-            alarm.getHorario().split(":")[0].
-        }*/
-        return  listaOrdenada;
+        for (int hora = 0; hora <= 23; hora++)
+            for (Alarm alarmHora : lista)
+                if (Integer.parseInt(alarmHora.getHorario().split(":")[0]) == hora)
+                    for (int minuto = 0; minuto <= 59; minuto++)
+                        for (Alarm alarmMinuto : lista)
+                            if (Integer.parseInt(alarmMinuto.getHorario().split(":")[0]) == hora && Integer.parseInt(alarmMinuto.getHorario().split(":")[1]) == minuto)
+                                listaOrdenada.add(alarmMinuto);
+
+
+        return listaOrdenada;
     }
 
     public static boolean AlterarSQL(SQLiteDatabase db, Alarm alarm) {
@@ -208,7 +210,7 @@ public class Alarm implements Cloneable  {
             lista.add(alarm);
         }
         c.close();
-        return lista;
+        return ordernarPorHorario(lista);
     }
 
     public static List<Alarm> ConsultarSQL(SQLiteDatabase db, long codPaciente) {
@@ -250,7 +252,7 @@ public class Alarm implements Cloneable  {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         where += " And '" + format.format(date) + "' >= date(" + FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_INICIO + ")";
         where += " And " + FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO + " = 1";
-        where += " And ('" + format.format(date) + "' <= date(" + FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM + ") Or date("+ FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM + ") Is Null )";
+        where += " And ('" + format.format(date) + "' <= date(" + FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM + ") Or date(" + FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM + ") Is Null )";
         lista = ConsultarSQL(db, where);
 
         for (Alarm item : lista) {
@@ -269,18 +271,17 @@ public class Alarm implements Cloneable  {
         alarm.setDescricao(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DESCRICAO)));
         alarm.setHorario(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_HORARIO)));
 
-        alarm.setSegunda(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEGUNDA))==1?true:false);
-        alarm.setTerca(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_TERCA))==1?true:false);
-        alarm.setQuarta(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUARTA))==1?true:false);
-        alarm.setQuinta(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUINTA))==1?true:false);
-        alarm.setSexta(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEXTA))==1?true:false);
-        alarm.setSabado(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SABADO))==1?true:false);
-        alarm.setDomingo(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DOMINGO))==1?true:false);
+        alarm.setSegunda(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEGUNDA)) == 1 ? true : false);
+        alarm.setTerca(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_TERCA)) == 1 ? true : false);
+        alarm.setQuarta(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUARTA)) == 1 ? true : false);
+        alarm.setQuinta(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_QUINTA)) == 1 ? true : false);
+        alarm.setSexta(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SEXTA)) == 1 ? true : false);
+        alarm.setSabado(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_SABADO)) == 1 ? true : false);
+        alarm.setDomingo(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DOMINGO)) == 1 ? true : false);
         alarm.setDataUltimoAviso(Util.ConverterStringDate(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_ULTIMO_AVISO))));
-        alarm.setAtivo(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO))==1?true:false);
+        alarm.setAtivo(c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_ATIVO)) == 1 ? true : false);
         alarm.setDataIncio(Util.ConverterStringDate(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_INICIO))));
         alarm.setDataFim(Util.ConverterStringDate(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedAlarm.COLUMN_NAME_DATA_FIM))));
-
 
 
         return alarm;
@@ -373,7 +374,7 @@ public class Alarm implements Cloneable  {
     }
 
     public int getSexta() {
-        return sexta?1:0;
+        return sexta ? 1 : 0;
     }
 
 
@@ -386,7 +387,7 @@ public class Alarm implements Cloneable  {
     }
 
     public int getSabado() {
-        return sabado?1:0;
+        return sabado ? 1 : 0;
     }
 
 
@@ -399,7 +400,7 @@ public class Alarm implements Cloneable  {
     }
 
     public int getDomingo() {
-        return domingo?1:0;
+        return domingo ? 1 : 0;
     }
 
 
@@ -444,7 +445,7 @@ public class Alarm implements Cloneable  {
     }
 
     public int getAtivo() {
-        return ativo?1:0;
+        return ativo ? 1 : 0;
     }
 
 
