@@ -2,11 +2,14 @@ package com.unisinos.patienthelper.Adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 
@@ -33,16 +36,19 @@ public class RecyclerAdapterSchedule extends RecyclerView.Adapter<RecyclerAdapte
         public TextView mTextViewTime;
         public TextView mTextViewDescription;
         public ViewGroup mRoot;
+        public FrameLayout mFrameLayout;
+
         public ViewHolder(View v) {
             super(v);
             mRoot = v.findViewById(R.id.cardViewSchedule);
             mTextViewPatientName = v.findViewById(R.id.textViewPatientName);
             mTextViewTime = v.findViewById(R.id.textViewTime);
             mTextViewDescription = v.findViewById(R.id.textViewDescription);
+            mFrameLayout = v.findViewById(R.id.frameLayoutColor);
         }
     }
-    
-    
+
+
     public RecyclerAdapterSchedule(Activity activity, List<Alarm> list) {
         this.activity = activity;
         this.list = list;
@@ -58,7 +64,7 @@ public class RecyclerAdapterSchedule extends RecyclerView.Adapter<RecyclerAdapte
     @Override
     public void onBindViewHolder(final RecyclerAdapterSchedule.ViewHolder holder, int position) {
         final Alarm alarm = list.get(position);
-       //TransitionManager.beginDelayedTransition(holder.mRoot, new AutoTransition());
+        //TransitionManager.beginDelayedTransition(holder.mRoot, new AutoTransition());
         holder.mTextViewPatientName.setText(alarm.getPaciente().getNome());
         holder.mTextViewTime.setText(alarm.getHorario());
         holder.mTextViewDescription.setText(alarm.getDescricao());
@@ -69,12 +75,16 @@ public class RecyclerAdapterSchedule extends RecyclerView.Adapter<RecyclerAdapte
                 Intent intent = new Intent(activity, PatientActivity.class);
                 Bundle bundle = new Bundle();
 
-                bundle.putLong(PatientActivity.COD_PATIENT,alarm.getCodPaciente());
+                bundle.putLong(PatientActivity.COD_PATIENT, alarm.getCodPaciente());
                 intent.putExtras(bundle);
                 activity.startActivityForResult(intent, MainActivity.REQ_LOAD_PATIENT);
             }
         });
 
+        if (alarm.getPaciente().getCor() == "")
+            holder.mFrameLayout.setBackground(new ColorDrawable(Color.parseColor("#26a69a")));
+        else
+            holder.mFrameLayout.setBackground(new ColorDrawable(Color.parseColor("#" + alarm.getPaciente().getCor())));
     }
 
     @Override

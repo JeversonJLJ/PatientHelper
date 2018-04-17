@@ -24,6 +24,8 @@ public class Paciente {
 
     private String observacao;
 
+    private String cor;
+
     public static boolean TestarCampos(SQLiteDatabase db, Paciente paciente) {
         return true;
     }
@@ -34,6 +36,7 @@ public class Paciente {
         values.put(FeedReaderContract.FeedPaciente.COLUMN_NAME_NOME, paciente.getNome());
         values.put(FeedReaderContract.FeedPaciente.COLUMN_NAME_DATA_NACIMENTO,  Util.ConverterDateString(paciente.getDataNacimento()));
         values.put(FeedReaderContract.FeedPaciente.COLUMN_NAME_OBSERVACAO, paciente.getObservacao());
+        values.put(FeedReaderContract.FeedPaciente.COLUMN_NAME_COR, paciente.getCor());
 
 
         if (db.insert(FeedReaderContract.FeedPaciente.TABLE_NAME, null, values) == -1)
@@ -69,6 +72,7 @@ public class Paciente {
         values.put(FeedReaderContract.FeedPaciente.COLUMN_NAME_NOME, paciente.getNome());
         values.put(FeedReaderContract.FeedPaciente.COLUMN_NAME_DATA_NACIMENTO, Util.ConverterDateString(paciente.getDataNacimento()));
         values.put(FeedReaderContract.FeedPaciente.COLUMN_NAME_OBSERVACAO, paciente.getObservacao());
+        values.put(FeedReaderContract.FeedPaciente.COLUMN_NAME_COR, paciente.getCor());
 
         String selection = FeedReaderContract.FeedPaciente.COLUMN_NAME_CODIGO + " = ?";
         String[] selectionArgs = {paciente.getCodigo() + ""};
@@ -96,13 +100,15 @@ public class Paciente {
     }
 
 
+
     public static List<Paciente> ConsultarSQL(SQLiteDatabase db, String complementoSelect) {
         List<Paciente> lista = new ArrayList<Paciente>();
         String sql = " Select ";
         sql += FeedReaderContract.FeedPaciente.COLUMN_NAME_CODIGO + ",\n";
         sql += FeedReaderContract.FeedPaciente.COLUMN_NAME_NOME + ",\n";
         sql += FeedReaderContract.FeedPaciente.COLUMN_NAME_DATA_NACIMENTO + ", \n";
-        sql += FeedReaderContract.FeedPaciente.COLUMN_NAME_OBSERVACAO + " \n";
+        sql += FeedReaderContract.FeedPaciente.COLUMN_NAME_OBSERVACAO + ", \n";
+        sql += FeedReaderContract.FeedPaciente.COLUMN_NAME_COR + " \n";
         sql += " From " + FeedReaderContract.FeedPaciente.TABLE_NAME + "\n";
         sql += " " + complementoSelect;
 
@@ -123,6 +129,7 @@ public class Paciente {
         paciente.setNome(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedPaciente.COLUMN_NAME_NOME)));
         paciente.setDataNacimento(Util.ConverterStringDate(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedPaciente.COLUMN_NAME_DATA_NACIMENTO))));
         paciente.setObservacao(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedPaciente.COLUMN_NAME_OBSERVACAO)));
+        paciente.setCor(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedPaciente.COLUMN_NAME_COR)));
 
         return paciente;
     }
@@ -157,5 +164,13 @@ public class Paciente {
 
     public void setObservacao(String observacao) {
         this.observacao = observacao;
+    }
+
+    public String getCor() {
+        return cor;
+    }
+
+    public void setCor(String cor) {
+        this.cor = cor;
     }
 }

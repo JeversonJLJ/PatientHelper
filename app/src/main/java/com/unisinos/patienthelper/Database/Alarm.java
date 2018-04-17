@@ -51,6 +51,7 @@ public class Alarm implements Cloneable  {
     private Paciente paciente;
 
 
+
     public Alarm getClone() {
         try {
             // call clone in Object.
@@ -120,6 +121,18 @@ public class Alarm implements Cloneable  {
             return false;
     }
 
+
+    private static List<Alarm> ordernarPorHorario(List<Alarm> lista){
+        List<Alarm> listaOrdenada = new ArrayList<Alarm>();
+
+      /*  int menorHora = 24;
+        int menorMinuto =60;
+        for(Alarm alarm:lista)
+        {
+            alarm.getHorario().split(":")[0].
+        }*/
+        return  listaOrdenada;
+    }
 
     public static boolean AlterarSQL(SQLiteDatabase db, Alarm alarm) {
         if (!TestarCampos(db, alarm))

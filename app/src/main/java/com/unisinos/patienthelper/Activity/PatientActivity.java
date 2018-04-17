@@ -1,30 +1,23 @@
 package com.unisinos.patienthelper.Activity;
 
-import android.graphics.Color;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.unisinos.patienthelper.Adapters.ViewPagerAdapter;
-import com.unisinos.patienthelper.Class.Util;
+import com.unisinos.patienthelper.Adapters.ViewPagerAdapterPatient;
+import com.unisinos.patienthelper.Class.ScrollHorizontalViewPager;
 import com.unisinos.patienthelper.Fragment.AlarmsFragment;
 import com.unisinos.patienthelper.Fragment.DataFragment;
 import com.unisinos.patienthelper.R;
@@ -33,8 +26,8 @@ public class PatientActivity extends AppCompatActivity {
 
     public static final String COD_PATIENT = "codPatient";
     private long mCodPatient;
-    private ViewPager mViewPager;
-    private ViewPagerAdapter mAdapter;
+    private ScrollHorizontalViewPager mViewPager;
+    private ViewPagerAdapterPatient mAdapter;
     private AlarmsFragment mAlarmsFragment;
     private DataFragment mDataFragment;
     private TabLayout mTabLayout;
@@ -72,7 +65,7 @@ public class PatientActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (ScrollHorizontalViewPager) findViewById(R.id.container);
         mViewPager.setOffscreenPageLimit(2);
         setupViewPager(mViewPager);
 
@@ -204,7 +197,7 @@ public class PatientActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mAdapter = new ViewPagerAdapterPatient(getSupportFragmentManager());
         mAlarmsFragment = new AlarmsFragment();
         mAlarmsFragment.codPatient = mCodPatient;
         mDataFragment = new DataFragment();

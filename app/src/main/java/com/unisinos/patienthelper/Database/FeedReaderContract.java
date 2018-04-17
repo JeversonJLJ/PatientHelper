@@ -26,13 +26,15 @@ public final class FeedReaderContract {
         public static final String COLUMN_NAME_NOME = "Nome";
         public static final String COLUMN_NAME_DATA_NACIMENTO = "Idade";
         public static final String COLUMN_NAME_OBSERVACAO = "Observacao";
+        public static final String COLUMN_NAME_COR = "Cor";
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + FeedPaciente.TABLE_NAME + " (" +
                         FeedPaciente.COLUMN_NAME_CODIGO + INTEGER_TYPE + " PRIMARY KEY," +
                         FeedPaciente.COLUMN_NAME_NOME + TEXT_TYPE + COMMA_SEP +
                         FeedPaciente.COLUMN_NAME_DATA_NACIMENTO + TEXT_TYPE + COMMA_SEP +
-                        FeedPaciente.COLUMN_NAME_OBSERVACAO + TEXT_TYPE + " )";
+                        FeedPaciente.COLUMN_NAME_OBSERVACAO + TEXT_TYPE + COMMA_SEP +
+                        FeedPaciente.COLUMN_NAME_COR + TEXT_TYPE + " )";
 
         public static final String SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + FeedPaciente.TABLE_NAME;
@@ -57,6 +59,7 @@ public final class FeedReaderContract {
         public static final String COLUMN_NAME_ATIVO= "Ativo";
         public static final String COLUMN_NAME_DATA_INICIO= "DataInicio";
         public static final String COLUMN_NAME_DATA_FIM= "DataFim";
+
 
 
 

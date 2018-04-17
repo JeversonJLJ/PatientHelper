@@ -17,12 +17,13 @@
             android:id="@+id/textViewPatientName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:textStyle="bold"
             android:layout_marginTop="8dp"
             android:text="Rodrigo da Silva"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/frameLayoutColor"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -33,6 +34,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
+            android:textStyle="bold"
             android:text="01:00"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -41,16 +43,36 @@
 
         <TextView
             android:id="@+id/textViewDescription"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="Tomar Remédio"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/frameLayoutColor"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTime" />
+
+        <FrameLayout
+            android:id="@+id/frameLayoutColor"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccentLight"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPatientName" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+        </FrameLayout>
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>
