@@ -76,6 +76,7 @@ public class RecyclerAdapterSchedule extends RecyclerView.Adapter<RecyclerAdapte
                 Bundle bundle = new Bundle();
 
                 bundle.putLong(PatientActivity.COD_PATIENT, alarm.getCodPaciente());
+                bundle.putInt(PatientActivity.TAB_LOAD, PatientActivity.TAB_LOAD_1);
                 intent.putExtras(bundle);
                 activity.startActivityForResult(intent, MainActivity.REQ_LOAD_PATIENT);
             }

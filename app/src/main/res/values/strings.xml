@@ -42,5 +42,6 @@
     <string name="loading_patients">Carregando Pacientes</string>
     <string name="patient">Paciente</string>
     <string name="color">Cor</string>
+    <string name="save_text">Salvar</string>
 
 </resources>

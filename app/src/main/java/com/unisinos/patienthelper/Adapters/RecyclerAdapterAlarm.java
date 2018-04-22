@@ -68,10 +68,12 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
 
 
         public ViewGroup mRoot;
+        public ViewGroup mRootActivity;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v, Activity activity) {
             super(v);
             mRoot = v.findViewById(R.id.cardViewAlarm);
+            mRootActivity = activity.findViewById(R.id.main_content);
             mTextViewTime = v.findViewById(R.id.textViewTime);
             mTextViewDescription = v.findViewById(R.id.textViewDescription);
             mTextInputEditTextDescription = v.findViewById(R.id.textInputEditTextDescription);
@@ -105,7 +107,7 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
     public RecyclerAdapterAlarm.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_view_alarm, parent, false);
 
-        return new RecyclerAdapterAlarm.ViewHolder(view);
+        return new RecyclerAdapterAlarm.ViewHolder(view, activity);
     }
 
     @Override
@@ -292,7 +294,7 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
                 }
                 callNotifyDataSetChanged();
                 Snackbar snackbar = Snackbar
-                        .make(activity.findViewById(android.R.id.content), R.string.alarm_deleted_text, Snackbar.LENGTH_LONG)
+                        .make(holder.mRootActivity, R.string.alarm_deleted_text, Snackbar.LENGTH_LONG)
                         .setAction(R.string.undo_text, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

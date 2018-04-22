@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity
 
     public static final int REQ_LOAD_PATIENT = 0;
     public static final int REQ_CREATE_PATIENT = 1;
+    public static final int REQ_LOAD_ALARMS = 2;
     private Date mDay;
     private TextView mTxtDate;
     private ImageButton mBtnNextDay;
@@ -112,7 +113,9 @@ public class MainActivity extends AppCompatActivity
                         Bundle bundle = new Bundle();
 
                         bundle.putLong(PatientActivity.COD_PATIENT, patient.getCodigo());
+                        bundle.putInt(PatientActivity.TAB_LOAD, PatientActivity.TAB_LOAD_1);
                         intent.putExtras(bundle);
+
                         activity.startActivityForResult(intent, MainActivity.REQ_LOAD_PATIENT);
 
 
@@ -283,6 +286,7 @@ public class MainActivity extends AppCompatActivity
                     Bundle bundle = new Bundle();
 
                     bundle.putLong(PatientActivity.COD_PATIENT, patient.getCodigo());
+                    bundle.putInt(PatientActivity.TAB_LOAD, PatientActivity.TAB_LOAD_0);
                     intent.putExtras(bundle);
                     startActivityForResult(intent, MainActivity.REQ_LOAD_PATIENT);
 

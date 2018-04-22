@@ -25,6 +25,9 @@ import com.unisinos.patienthelper.R;
 public class PatientActivity extends AppCompatActivity {
 
     public static final String COD_PATIENT = "codPatient";
+    public static final String TAB_LOAD = "tabLoad";
+    public static final int TAB_LOAD_0 = 0;
+    public static final int TAB_LOAD_1 = 1;
     private long mCodPatient;
     private ScrollHorizontalViewPager mViewPager;
     private ViewPagerAdapterPatient mAdapter;
@@ -44,9 +47,12 @@ public class PatientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_patient);
         mCodPatient = -1;
 
+        int tabLoad = 0;
         Bundle bundle = this.getIntent().getExtras();
-        if (bundle != null)
+        if (bundle != null) {
             mCodPatient = bundle.getLong(COD_PATIENT);
+            tabLoad = bundle.getInt(TAB_LOAD);
+        }
 
         mFabAddAlarm = (FloatingActionButton) findViewById(R.id.fab_new_alarm);
         mFabSavePatient = (FloatingActionButton) findViewById(R.id.fab_save_patient);
@@ -72,11 +78,11 @@ public class PatientActivity extends AppCompatActivity {
         mTabLayout = (TabLayout) findViewById(R.id.tab_main);
         allotEachTabWithEqualWidth();
 
-        if (mCodPatient >= 0) {
-            setTab(1);
-        } else {
+        if (tabLoad == TAB_LOAD_0)
             setTab(0);
-        }
+        else
+            setTab(1);
+
 
         clickButtons();
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

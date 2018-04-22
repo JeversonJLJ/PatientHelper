@@ -71,6 +71,7 @@
         fab:fab_colorNormal="@color/colorAccent"
         fab:fab_colorPressed="@color/colorAccentLight"
         fab:fab_colorRipple="@color/colorFabRipple"
+        app:layout_behavior="com.unisinos.patienthelper.Class.FloatingActionBehavior"
         android:id="@+id/fab_new_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,6 +83,7 @@
         fab:fab_colorNormal="@color/colorAccent"
         fab:fab_colorPressed="@color/colorAccentLight"
         fab:fab_colorRipple="@color/colorFabRipple"
+        app:layout_behavior="com.unisinos.patienthelper.Class.FloatingActionBehavior"
         android:id="@+id/fab_save_patient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -96,6 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        app:layout_behavior="com.unisinos.patienthelper.Class.FloatingActionBehavior"
         fab:menu_animationDelayPerItem="55"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_buttonSpacing="0dp"
@@ -135,7 +138,7 @@
             fab:fab_colorNormal="@color/colorAccent"
             fab:fab_colorPressed="@color/colorAccentLight"
             fab:fab_colorRipple="@color/colorFabRipple"
-            fab:fab_label="@string/add_patient_text"
+            fab:fab_label="@string/delete_text"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
@@ -146,7 +149,7 @@
             fab:fab_colorNormal="@color/colorAccent"
             fab:fab_colorPressed="@color/colorAccentLight"
             fab:fab_colorRipple="@color/colorFabRipple"
-            fab:fab_label="@string/add_alarm_text"
+            fab:fab_label="@string/save_text"
             fab:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>
