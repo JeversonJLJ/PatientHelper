@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.unisinos.patienthelper.Activity.PatientActivity">
+    tools:context="com.junkerapps.patienthelper.Activity.PatientActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -58,7 +58,7 @@
 
         </android.support.design.widget.TabLayout>
 
-        <com.unisinos.patienthelper.Class.ScrollHorizontalViewPager
+        <com.junkerapps.patienthelper.Class.ScrollHorizontalViewPager
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -71,7 +71,7 @@
         fab:fab_colorNormal="@color/colorAccent"
         fab:fab_colorPressed="@color/colorAccentLight"
         fab:fab_colorRipple="@color/colorFabRipple"
-        app:layout_behavior="com.unisinos.patienthelper.Class.FloatingActionBehavior"
+        app:layout_behavior="com.junkerapps.patienthelper.Class.FloatingActionBehavior"
         android:id="@+id/fab_new_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
         fab:fab_colorNormal="@color/colorAccent"
         fab:fab_colorPressed="@color/colorAccentLight"
         fab:fab_colorRipple="@color/colorFabRipple"
-        app:layout_behavior="com.unisinos.patienthelper.Class.FloatingActionBehavior"
+        app:layout_behavior="com.junkerapps.patienthelper.Class.FloatingActionBehavior"
         android:id="@+id/fab_save_patient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:layout_behavior="com.unisinos.patienthelper.Class.FloatingActionBehavior"
+        app:layout_behavior="com.junkerapps.patienthelper.Class.FloatingActionBehavior"
         fab:menu_animationDelayPerItem="55"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_buttonSpacing="0dp"
