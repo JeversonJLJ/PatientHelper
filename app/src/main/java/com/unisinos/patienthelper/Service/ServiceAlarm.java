@@ -7,15 +7,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.RingtoneManager;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
+import com.unisinos.patienthelper.Activity.AlarmActivity;
 import com.unisinos.patienthelper.Activity.MainActivity;
+import com.unisinos.patienthelper.Activity.PatientActivity;
 import com.unisinos.patienthelper.Database.Database;
 import com.unisinos.patienthelper.Database.Alarm;
 import com.unisinos.patienthelper.R;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -106,10 +110,23 @@ public class ServiceAlarm extends Service {
                                     Intent intent = new Intent(context, MainActivity.class);//CUSTOM ACTIVITY HERE
                                     PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                     mBuilder.setContentIntent(contentIntent);
-                                    notificationManager.notify(lastID, mBuilder.build());
+                                    //notificationManager.notify(lastID, mBuilder.build());
                                     lastID++;
                                     alarm.setDataUltimoAviso(Calendar.getInstance().getTime());
                                     Alarm.AlterarSQL(db, alarm);
+
+                                    Intent intentActivityAlarm = new Intent(context, AlarmActivity.class);
+                                    intentActivityAlarm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    Bundle bundle = new Bundle();
+                                    String hour = String.format("%02d", calendarAlarm.get(Calendar.HOUR_OF_DAY)) + ":" + String.format("%02d", calendarAlarm.get(Calendar.MINUTE));
+                                    bundle.putString("Hour",hour);
+                                    bundle.putString("Description",alarm.getDescricao());
+                                    intentActivityAlarm.putExtra("alarm",bundle);
+
+                                    context.startActivity(intentActivityAlarm);
+
+
+
                                 }
                             }
 

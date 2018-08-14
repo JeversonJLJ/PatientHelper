@@ -44,4 +44,12 @@
     <string name="color">Cor</string>
     <string name="save_text">Salvar</string>
 
+    <string name="title_activity_alarm">AlarmActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="stop">Parar</string>
+    <string name="alarm">Alarme</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+
 </resources>

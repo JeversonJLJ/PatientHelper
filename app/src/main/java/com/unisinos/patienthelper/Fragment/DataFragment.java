@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.unisinos.patienthelper.Database.Alarm;
 import com.unisinos.patienthelper.Database.Database;
@@ -53,46 +54,49 @@ public class DataFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_patient_data, container, false);
-        mRootViewGroup = (ViewGroup) mRootView;
-        mEditTextName = mRootView.findViewById(R.id.textInputEditTextName);
-        mEditTextBirthDate = mRootView.findViewById(R.id.editTextBirthDate);
-        mEditTextAge = mRootView.findViewById(R.id.editTextAge);
-        mEditTextComments = mRootView.findViewById(R.id.editTextComments);
+        try {
+            mRootView = inflater.inflate(R.layout.fragment_patient_data, container, false);
+            mRootViewGroup = (ViewGroup) mRootView;
+            mEditTextName = mRootView.findViewById(R.id.textInputEditTextName);
+            mEditTextBirthDate = mRootView.findViewById(R.id.editTextBirthDate);
+            mEditTextAge = mRootView.findViewById(R.id.editTextAge);
+            mEditTextComments = mRootView.findViewById(R.id.editTextComments);
 
-        mEditTextBirthDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogDate.ShowData(getActivity(), new DialogDate.OnSelectedDate() {
-                    @Override
-                    public void onSelectedDate(Date date, String dateText) {
-                        if (date != null && !dateText.isEmpty()) {
-                            mEditTextBirthDate.setText(dateText);
-                            updateAge(date);
+            mEditTextBirthDate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DialogDate.ShowData(getActivity(), new DialogDate.OnSelectedDate() {
+                        @Override
+                        public void onSelectedDate(Date date, String dateText) {
+                            if (date != null && !dateText.isEmpty()) {
+                                mEditTextBirthDate.setText(dateText);
+                                updateAge(date);
+                            }
+
+
                         }
+                    }, Util.ConverterCalendario(mEditTextBirthDate.getText().toString()));
+                }
+            });
 
-
-                    }
-                }, Util.ConverterCalendario(mEditTextBirthDate.getText().toString()));
-            }
-        });
-
-        mCardViewColor = mRootView.findViewById(R.id.cardViewColors);
-        mFabSelectedColor = mRootView.findViewById(R.id.fab_selected_color);
-        mFab26a69a = mRootView.findViewById(R.id.fab_color_26a69a);
-        mFab42a5f5 = mRootView.findViewById(R.id.fab_color_42a5f5);
-        mFab66bb6a = mRootView.findViewById(R.id.fab_color_66bb6a);
-        mFab78909c = mRootView.findViewById(R.id.fab_color_78909c);
-        mFab8d6e63 = mRootView.findViewById(R.id.fab_color_8d6e63);
-        mFabab47bc = mRootView.findViewById(R.id.fab_color_ab47bc);
-        mFabd4e157 = mRootView.findViewById(R.id.fab_color_d4e157);
-        mFabec407a = mRootView.findViewById(R.id.fab_color_ec407a);
-        mFabef5350 = mRootView.findViewById(R.id.fab_color_ef5350);
-        mFabffee58 = mRootView.findViewById(R.id.fab_color_ffee58);
-        initAnimation();
-        colorSelect();
-        loadData();
-
+            mCardViewColor = mRootView.findViewById(R.id.cardViewColors);
+            mFabSelectedColor = mRootView.findViewById(R.id.fab_selected_color);
+            mFab26a69a = mRootView.findViewById(R.id.fab_color_26a69a);
+            mFab42a5f5 = mRootView.findViewById(R.id.fab_color_42a5f5);
+            mFab66bb6a = mRootView.findViewById(R.id.fab_color_66bb6a);
+            mFab78909c = mRootView.findViewById(R.id.fab_color_78909c);
+            mFab8d6e63 = mRootView.findViewById(R.id.fab_color_8d6e63);
+            mFabab47bc = mRootView.findViewById(R.id.fab_color_ab47bc);
+            mFabd4e157 = mRootView.findViewById(R.id.fab_color_d4e157);
+            mFabec407a = mRootView.findViewById(R.id.fab_color_ec407a);
+            mFabef5350 = mRootView.findViewById(R.id.fab_color_ef5350);
+            mFabffee58 = mRootView.findViewById(R.id.fab_color_ffee58);
+            initAnimation();
+            colorSelect();
+            loadData();
+        } catch (Exception e) {
+            Toast.makeText(this.getActivity(), e.getMessage(), Toast.LENGTH_SHORT);
+        }
         return mRootView;
     }
 
@@ -101,29 +105,35 @@ public class DataFragment extends Fragment {
         mAnimHide = AnimationUtils.loadAnimation(this.getActivity(), R.anim.anim_view_hide_left_to_right);
     }
 
-    public Drawable getColor(String color){
-        switch (color){
-            case "42a5f5":
-                return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_42a5f5);
-            case "66bb6a":
-                return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_66bb6a);
-            case "78909c":
-                return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_78909c);
-            case "8d6e63":
-                return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_8d6e63);
-            case "ab47bc":
-                return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_ab47bc);
-            case "d4e157":
-                return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_d4e157);
-            case "ec407a":
-                return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_ec407a);
-            case "ef5350":
-                return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_ef5350);
-            case "ffee58":
-                return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_ffee58);
-            default:
-                return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_26a69a);
+    public Drawable getColor(String color) {
+        try {
+            switch (color) {
+                case "42a5f5":
+                    return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_42a5f5);
+                case "66bb6a":
+                    return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_66bb6a);
+                case "78909c":
+                    return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_78909c);
+                case "8d6e63":
+                    return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_8d6e63);
+                case "ab47bc":
+                    return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_ab47bc);
+                case "d4e157":
+                    return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_d4e157);
+                case "ec407a":
+                    return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_ec407a);
+                case "ef5350":
+                    return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_ef5350);
+                case "ffee58":
+                    return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_ffee58);
+                default:
+                    return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_26a69a);
+            }
+        } catch (Exception e) {
+            Toast.makeText(this.getActivity(), e.getMessage(), Toast.LENGTH_SHORT);
+            return ContextCompat.getDrawable(mRootView.getContext(), R.drawable.shape_button_color_26a69a);
         }
+
     }
 
     private void colorSelect() {
@@ -287,59 +297,65 @@ public class DataFragment extends Fragment {
             mEditTextComments.setText(mPatient.getObservacao());
             mFabSelectedColor.setBackground(getColor(mPatient.getCor()));
             mCurrentColorSelectd = mPatient.getCor();
-        }
-        else{
+        } else {
             mCurrentColorSelectd = "26a69a";
         }
 
     }
 
     public void delete() {
-        Database mDbHelper = new Database(mRootView.getContext());
-        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        final Paciente patient = Paciente.ConsultarChave(db, codPatient);
-        DialogApp.showDialogYesNo(getActivity(), getString(R.string.delete_text), getString(R.string.delete_patient_question_text), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Paciente.ExcluirSQL(db, patient);
-                        Alarm.ExcluirSQL(db, patient);
-                        getActivity().finish();
-                    }
-                },
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+        try {
+            Database mDbHelper = new Database(mRootView.getContext());
+            final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            final Paciente patient = Paciente.ConsultarChave(db, codPatient);
+            DialogApp.showDialogYesNo(getActivity(), getString(R.string.delete_text), getString(R.string.delete_patient_question_text), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Paciente.ExcluirSQL(db, patient);
+                            Alarm.ExcluirSQL(db, patient);
+                            getActivity().finish();
+                        }
+                    },
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                    }
-                });
+                        }
+                    });
 
-
+        } catch (Exception e) {
+            Toast.makeText(this.getActivity(), e.getMessage(), Toast.LENGTH_SHORT);
+        }
     }
 
     public void save(boolean closeActivity) {
-        Database mDbHelper = new Database(mRootView.getContext());
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        Paciente patient;
+        try {
+            Database mDbHelper = new Database(mRootView.getContext());
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            Paciente patient;
 
-        if (codPatient >= 0) {
-            patient = Paciente.ConsultarChave(db, codPatient);
-            patient.setNome(mEditTextName.getText().toString());
-            patient.setDataNacimento(Util.ConverterStringDate(mEditTextBirthDate.getText().toString() + " 00:00:00"));
-            patient.setObservacao(mEditTextComments.getText().toString());
-            patient.setCor(mCurrentColorSelectd);
-            Paciente.AlterarSQL(db, patient);
-        } else {
-            patient = new Paciente();
-            patient.setCodigo(Paciente.ObterProximoCodigo(db));
-            patient.setNome(mEditTextName.getText().toString());
-            patient.setDataNacimento(Util.ConverterStringDate(mEditTextBirthDate.getText().toString() + " 00:00:00"));
-            patient.setObservacao(mEditTextComments.getText().toString());
-            patient.setCor(mCurrentColorSelectd);
-            Paciente.InserirSQL(db, patient);
-            codPatient = patient.getCodigo();
+            if (codPatient >= 0) {
+                patient = Paciente.ConsultarChave(db, codPatient);
+                patient.setNome(mEditTextName.getText().toString());
+                patient.setDataNacimento(Util.ConverterStringDate(mEditTextBirthDate.getText().toString() + " 00:00:00"));
+                patient.setObservacao(mEditTextComments.getText().toString());
+                patient.setCor(mCurrentColorSelectd);
+                Paciente.AlterarSQL(db, patient);
+            } else {
+                patient = new Paciente();
+                patient.setCodigo(Paciente.ObterProximoCodigo(db));
+                patient.setNome(mEditTextName.getText().toString());
+                patient.setDataNacimento(Util.ConverterStringDate(mEditTextBirthDate.getText().toString() + " 00:00:00"));
+                patient.setObservacao(mEditTextComments.getText().toString());
+                patient.setCor(mCurrentColorSelectd);
+                Paciente.InserirSQL(db, patient);
+                codPatient = patient.getCodigo();
+            }
+            if (closeActivity)
+                getActivity().finish();
+        } catch (Exception e) {
+            Toast.makeText(this.getActivity(), e.getMessage(), Toast.LENGTH_SHORT);
         }
-        if (closeActivity)
-            getActivity().finish();
 
     }
 }

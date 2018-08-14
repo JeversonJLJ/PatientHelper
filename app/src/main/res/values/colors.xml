@@ -13,4 +13,6 @@
     <color name="colorFabLabelNormal">#333</color>
     <color name="colorFabLabelPressed">#444</color>
     <color name="colorFabLabelRipple">#66efecec</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

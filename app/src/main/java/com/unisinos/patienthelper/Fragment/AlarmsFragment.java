@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.unisinos.patienthelper.Adapters.RecyclerAdapterAlarm;
 import com.unisinos.patienthelper.Database.Alarm;
@@ -39,22 +40,27 @@ public class AlarmsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_patient_alarms, container, false);
-        mAlarmList = new ArrayList<Alarm>();
+        try {
+            mRootView = inflater.inflate(R.layout.fragment_patient_alarms, container, false);
+            mAlarmList = new ArrayList<Alarm>();
 
-        mRecyclerView = mRootView.findViewById(R.id.recycler_view_alarm);
-        mLayoutManager = new LinearLayoutManager(mRootView.getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView = mRootView.findViewById(R.id.recycler_view_alarm);
+            mLayoutManager = new LinearLayoutManager(mRootView.getContext());
+            mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerAdapterAlarm(getActivity(), mAlarmList);
-        mRecyclerView.setAdapter(mAdapter);
+            mAdapter = new RecyclerAdapterAlarm(getActivity(), mAlarmList);
+            mRecyclerView.setAdapter(mAdapter);
 
-        loadData();
+            loadData();
+        } catch (Exception e) {
+            Toast.makeText(this.getActivity(), e.getMessage(), Toast.LENGTH_SHORT);
+        }
         return mRootView;
 
     }
 
     public void newAlarm(){
+        try{
         DialogApp.showDialogTimePicker(getActivity(), new DialogApp.OnDialogTimePicker() {
             @Override
             public void onClickOkDialogTimePicker(String timeText) {
@@ -90,6 +96,9 @@ public class AlarmsFragment extends Fragment {
 
             }
         });
+        } catch (Exception e) {
+            Toast.makeText(this.getActivity(), e.getMessage(), Toast.LENGTH_SHORT);
+        }
     }
     private void loadData() {
         Database mDbHelper = new Database(mRootView.getContext());

@@ -121,7 +121,7 @@ public class DialogSearch extends Dialog {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN
                         && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    SelecionarPrimeiroItem(lvwSearch);
+                    SelectFirtItem(lvwSearch);
                     return false;
                 }
                 return false;
@@ -161,7 +161,7 @@ public class DialogSearch extends Dialog {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelecionarPrimeiroItem(lvwSearch);
+                SelectFirtItem(lvwSearch);
             }
         });
 
@@ -176,8 +176,8 @@ public class DialogSearch extends Dialog {
             onListDataListener.onListData(this, "");
     }
 
-    private void SelecionarPrimeiroItem(ListView lvw) {
-        Object objeto = ObterPrimeiroItem(lvw);
+    private void SelectFirtItem(ListView lvw) {
+        Object objeto = GetFirstItem(lvw);
         if (objeto == null) {
             Toast.makeText(activity, R.string.nothing_to_show, Toast.LENGTH_SHORT);
             return;
@@ -187,7 +187,7 @@ public class DialogSearch extends Dialog {
         DialogSearch.this.dismiss();
     }
 
-    private Object ObterPrimeiroItem(ListView lvw) {
+    private Object GetFirstItem(ListView lvw) {
         ListAdapter adapter = lvw.getAdapter();
         if (adapter == null) {
             return null;

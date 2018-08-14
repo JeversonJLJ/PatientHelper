@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.unisinos.patienthelper.Class.Util;
@@ -112,34 +113,38 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
 
     @Override
     public void onBindViewHolder(final RecyclerAdapterAlarm.ViewHolder holder, int position) {
-        final Alarm alarm = list.get(position);
-        //TransitionManager.beginDelayedTransition(holder.mRoot, new AutoTransition());
-        holder.mProgressBar.setVisibility(View.GONE);
+        try {
+            final Alarm alarm = list.get(position);
+            //TransitionManager.beginDelayedTransition(holder.mRoot, new AutoTransition());
+            holder.mProgressBar.setVisibility(View.GONE);
 
-        holder.mCodAlarm = alarm.getCodigo();
-        holder.mCodPatient = alarm.getCodPaciente();
-        holder.mTextViewTime.setText(alarm.getHorario());
-        holder.mTextInputEditTextDescription.setText(alarm.getDescricao());
-        holder.mTextViewDescription.setText(alarm.getDescricao());
-        holder.mSwitchActive.setChecked(alarm.isAtivo());
-        holder.mToggleButtonSunday.setChecked(alarm.isDomingo());
-        holder.mToggleButtonMonday.setChecked(alarm.isSegunda());
-        holder.mToggleButtonTuesday.setChecked(alarm.isTerca());
-        holder.mToggleButtonWednesday.setChecked(alarm.isQuarta());
-        holder.mToggleButtonThursday.setChecked(alarm.isQuinta());
-        holder.mToggleButtonFriday.setChecked(alarm.isSexta());
-        holder.mToggleButtonSaturday.setChecked(alarm.isSabado());
+            holder.mCodAlarm = alarm.getCodigo();
+            holder.mCodPatient = alarm.getCodPaciente();
+            holder.mTextViewTime.setText(alarm.getHorario());
+            holder.mTextInputEditTextDescription.setText(alarm.getDescricao());
+            holder.mTextViewDescription.setText(alarm.getDescricao());
+            holder.mSwitchActive.setChecked(alarm.isAtivo());
+            holder.mToggleButtonSunday.setChecked(alarm.isDomingo());
+            holder.mToggleButtonMonday.setChecked(alarm.isSegunda());
+            holder.mToggleButtonTuesday.setChecked(alarm.isTerca());
+            holder.mToggleButtonWednesday.setChecked(alarm.isQuarta());
+            holder.mToggleButtonThursday.setChecked(alarm.isQuinta());
+            holder.mToggleButtonFriday.setChecked(alarm.isSexta());
+            holder.mToggleButtonSaturday.setChecked(alarm.isSabado());
 
-        if (alarm.getDataFim() != null) {
-            holder.mCheckBoxFinishAt.setChecked(true);
-            holder.mEditTextFinishDate.setText(Util.ConverterData(alarm.getDataFim()));
-        } else {
-            holder.mCheckBoxFinishAt.setChecked(false);
-            holder.mEditTextFinishDate.setText("");
+            if (alarm.getDataFim() != null) {
+                holder.mCheckBoxFinishAt.setChecked(true);
+                holder.mEditTextFinishDate.setText(Util.ConverterData(alarm.getDataFim()));
+            } else {
+                holder.mCheckBoxFinishAt.setChecked(false);
+                holder.mEditTextFinishDate.setText("");
+            }
+
+            buttonClick(holder);
+            changeLayout(holder, false);
+        } catch (Exception e) {
+            Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT);
         }
-
-        buttonClick(holder);
-        changeLayout(holder, false);
     }
 
     private void callNotifyDataSetChanged() {
@@ -156,7 +161,7 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
                     @Override
                     public void onClickOkDialogTimePicker(String timeText) {
                         holder.mTextViewTime.setText(timeText);
-                        save(holder,true);
+                        save(holder, true);
                     }
                 });
             }
@@ -340,7 +345,7 @@ public class RecyclerAdapterAlarm extends RecyclerView.Adapter<RecyclerAdapterAl
     }
 
     private void save(final RecyclerAdapterAlarm.ViewHolder holder) {
-        save(holder,false);
+        save(holder, false);
 
     }
 

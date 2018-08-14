@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -43,83 +44,86 @@ public class PatientActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient);
-        mCodPatient = -1;
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_patient);
+            mCodPatient = -1;
 
-        int tabLoad = 0;
-        Bundle bundle = this.getIntent().getExtras();
-        if (bundle != null) {
-            mCodPatient = bundle.getLong(COD_PATIENT);
-            tabLoad = bundle.getInt(TAB_LOAD);
+            int tabLoad = 0;
+            Bundle bundle = this.getIntent().getExtras();
+            if (bundle != null) {
+                mCodPatient = bundle.getLong(COD_PATIENT);
+                tabLoad = bundle.getInt(TAB_LOAD);
+            }
+
+            mFabAddAlarm = (FloatingActionButton) findViewById(R.id.fab_new_alarm);
+            mFabSavePatient = (FloatingActionButton) findViewById(R.id.fab_save_patient);
+            mFabPatientEditMenu = (FloatingActionMenu) findViewById(R.id.fab_patient_edit_menu);
+            mFabPatientEditMenu.setIconAnimated(false);
+            mFabMenuSavePatient = (FloatingActionButton) findViewById(R.id.fab_menu_save_patient);
+            mFabMenuDeletePatient = (FloatingActionButton) findViewById(R.id.fab_menu_delete_patient);
+
+
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            // Create the adapter that will return a fragment for each of the two
+            // primary sections of the activity.
+
+            final ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+            // Set up the ViewPager with the sections adapter.
+            mViewPager = (ScrollHorizontalViewPager) findViewById(R.id.container);
+            mViewPager.setOffscreenPageLimit(2);
+            setupViewPager(mViewPager);
+
+            mTabLayout = (TabLayout) findViewById(R.id.tab_main);
+            allotEachTabWithEqualWidth();
+
+            if (tabLoad == TAB_LOAD_0)
+                setTab(0);
+            else
+                setTab(1);
+
+
+            clickButtons();
+            mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    setTab(tab.getPosition());
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    setTab(position);
+
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
         }
-
-        mFabAddAlarm = (FloatingActionButton) findViewById(R.id.fab_new_alarm);
-        mFabSavePatient = (FloatingActionButton) findViewById(R.id.fab_save_patient);
-        mFabPatientEditMenu = (FloatingActionMenu) findViewById(R.id.fab_patient_edit_menu);
-        mFabPatientEditMenu.setIconAnimated(false);
-        mFabMenuSavePatient = (FloatingActionButton) findViewById(R.id.fab_menu_save_patient);
-        mFabMenuDeletePatient = (FloatingActionButton) findViewById(R.id.fab_menu_delete_patient);
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the two
-        // primary sections of the activity.
-
-        final ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ScrollHorizontalViewPager) findViewById(R.id.container);
-        mViewPager.setOffscreenPageLimit(2);
-        setupViewPager(mViewPager);
-
-        mTabLayout = (TabLayout) findViewById(R.id.tab_main);
-        allotEachTabWithEqualWidth();
-
-        if (tabLoad == TAB_LOAD_0)
-            setTab(0);
-        else
-            setTab(1);
-
-
-        clickButtons();
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                setTab(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                setTab(position);
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
 
     }
 
@@ -218,7 +222,11 @@ public class PatientActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_patient, menu);
+        try {
+            getMenuInflater().inflate(R.menu.menu_patient, menu);
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
+        }
         return true;
     }
 
@@ -227,18 +235,22 @@ public class PatientActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        try {
+            int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+            //noinspection SimplifiableIfStatement
         /*if (id == R.id.action_settings) {
             return true;
         }*/
-        if (id == android.R.id.home) {
-            finish();
-            return true;
+            if (id == android.R.id.home) {
+                finish();
+                return true;
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
         }
-
         return super.onOptionsItemSelected(item);
+
     }
 
 }

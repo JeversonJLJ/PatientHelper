@@ -44,66 +44,68 @@ public class DayOfTheWeekFragment extends Fragment {
     AlarmCollectionPagerAdapter mAlarmCollectionPagerAdapter;
     ViewPager mViewPager;
     int mPosition = defaultPosition;
-    public static final int defaultPosition =182;
+    public static final int defaultPosition = 182;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.view_pager_main, container, false);
+        try {
+            mRootView = inflater.inflate(R.layout.view_pager_main, container, false);
 
 
+            mAlarmCollectionPagerAdapter = new AlarmCollectionPagerAdapter(getActivity().getSupportFragmentManager());
+            mViewPager = (ViewPager) mRootView.findViewById(R.id.view_pager_alarm);
+            mViewPager.setAdapter(mAlarmCollectionPagerAdapter);
 
-        mAlarmCollectionPagerAdapter = new AlarmCollectionPagerAdapter(getActivity().getSupportFragmentManager());
-        mViewPager = (ViewPager) mRootView.findViewById(R.id.view_pager_alarm);
-        mViewPager.setAdapter(mAlarmCollectionPagerAdapter);
+            mViewPager.setCurrentItem(defaultPosition);
+            changeDate(defaultPosition);
 
-        mViewPager.setCurrentItem(defaultPosition);
-        changeDate(defaultPosition);
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                }
 
-            }
+                @Override
+                public void onPageSelected(int position) {
+                    mPosition = position;
+                    changeDate(position);
+                }
 
-            @Override
-            public void onPageSelected(int position) {
-                mPosition = position;
-                changeDate(position);
-            }
+                @Override
+                public void onPageScrollStateChanged(int state) {
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+                }
+            });
 
-            }
-        });
-
-        PagerTitleStrip pagerTitleStrip = mRootView.findViewById(R.id.pager_title_strip);
-        pagerTitleStrip.setTextColor(Color.WHITE);
-
-
-
+            PagerTitleStrip pagerTitleStrip = mRootView.findViewById(R.id.pager_title_strip);
+            pagerTitleStrip.setTextColor(Color.WHITE);
+        } catch (Exception e) {
+            Toast.makeText(this.getActivity(), e.getMessage(), Toast.LENGTH_SHORT);
+        }
         return mRootView;
     }
 
-    public void reload(){
+    public void reload() {
         mViewPager.setAdapter(mAlarmCollectionPagerAdapter);
         mViewPager.setCurrentItem(mPosition);
     }
-    private void changeDate(int position){
+
+    private void changeDate(int position) {
         Calendar tempDay = Calendar.getInstance();
         tempDay.add(Calendar.DATE, ((position + 1) - 182));
-        MainActivity mainActivity =(MainActivity)this.getActivity();
+        MainActivity mainActivity = (MainActivity) this.getActivity();
         mainActivity.mPosition = position;
         mainActivity.setDate(tempDay.getTime());
     }
 
-    public void setPosition(int position){
+    public void setPosition(int position) {
         Calendar tempDay = Calendar.getInstance();
         tempDay.add(Calendar.DATE, ((position + 1) - 182));
         mPosition = position;
         mViewPager.setCurrentItem(mPosition);
     }
+
     public class AlarmCollectionPagerAdapter extends FragmentStatePagerAdapter {
         private Calendar day;
 
@@ -180,7 +182,7 @@ public class DayOfTheWeekFragment extends Fragment {
 
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                mRecyclerView.setOnScrollChangeListener(new OnScrollObserver.OnScrollObserverApi23(mRecyclerView){
+                mRecyclerView.setOnScrollChangeListener(new OnScrollObserver.OnScrollObserverApi23(mRecyclerView) {
                     @Override
                     public void onScrollUp() {
                         ((MainActivity) getActivity()).showHideOnScroll(false);
@@ -191,8 +193,7 @@ public class DayOfTheWeekFragment extends Fragment {
                         ((MainActivity) getActivity()).showHideOnScroll(true);
                     }
                 });
-            }
-            else{
+            } else {
                 mRecyclerView.setOnScrollListener(new OnScrollObserver.OnScrollObserverRecyclerView() {
                     @Override
                     public void onScrollUp() {
