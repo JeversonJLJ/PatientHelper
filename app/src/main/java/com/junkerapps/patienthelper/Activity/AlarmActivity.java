@@ -109,7 +109,7 @@ public class AlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm);
 
 
-        Uri alarmTone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        Uri alarmTone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (mRingtoneAlarm == null || !mRingtoneAlarm.isPlaying()) {
             mRingtoneAlarm = MediaPlayer.create(getApplicationContext(), alarmTone);
             if (mRingtoneAlarm == null) {

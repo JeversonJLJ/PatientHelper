@@ -96,7 +96,7 @@ public class ServiceAlarm extends Service {
                             }
 
                             if (calendarAlarm.get(Calendar.HOUR_OF_DAY) == calendarNow.get(Calendar.HOUR_OF_DAY) &&
-                                    Math.abs(calendarAlarm.get(Calendar.MINUTE) - calendarNow.get(Calendar.MINUTE))<=5) {
+                                    Math.abs(calendarAlarm.get(Calendar.MINUTE) - calendarNow.get(Calendar.MINUTE))<=1) {
                                 if (!notifiedToday) {
                                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, String.valueOf(lastID))
                                             .setSmallIcon(R.drawable.ic_medication_time)
